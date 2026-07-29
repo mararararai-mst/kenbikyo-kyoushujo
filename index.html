@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>顕微鏡教習所｜中2理科・光学顕微鏡の使い方</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+<meta name="description" content="顕微鏡の使い方を学科（倒立像・倍率のしくみ）→技能検定→路上教習（観察室は事件だらけ）→卒業検定で身につける中2理科アプリ。合格で免許証を印刷。">
+<meta property="og:title" content="🔬 顕微鏡教習所">
+<meta property="og:description" content="なぜ？を学ぶ学科、体で覚える技能、とっさの判断を鍛える路上、ノーヒントの卒検。本物の顕微鏡を使う前に。">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'BIZ UDGothic', sans-serif;
+    background-color: #f0f7ff; color: #333; line-height: 1.6; margin: 0; padding: 15px;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #app-container {
+    margin: 0 auto; background: white; padding: 20px; border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 2px solid #d0d0d0; transition: all 0.3s;
+    position: relative; max-width: 600px;
+  }
+  h1 { font-size: 21px; border-bottom: 3px solid #005bac; padding-bottom: 10px; margin-top: 0; display: flex; align-items: baseline; justify-content: space-between;}
+  .version-badge { font-size: 12px; color: #666; font-weight: normal; background: #eee; padding: 2px 8px; border-radius: 12px; }
+  button { touch-action: manipulation; }
+
+  .stage-label{font-size:13px;font-weight:bold;color:#888;margin:14px 0 6px;border-left:4px solid #005bac;padding-left:8px;}
+  .menu-btn { display: block; width: 100%; padding: 14px 16px; margin-bottom: 10px; font-size: 16px; font-weight: bold; font-family: inherit; border-radius: 10px; border: none; cursor: pointer; color: white; transition: 0.2s; text-align:left; position:relative;}
+  .menu-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+  .menu-btn .stamp{position:absolute;right:12px;top:50%;transform:translateY(-50%) rotate(-12deg);font-size:13px;background:#fff;color:#d32f2f;border:2px solid #d32f2f;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+  .menu-btn.locked{filter:grayscale(1) opacity(.55);}
+  #btn-gakka { background: #00897b; }
+  #btn-parts { background: #9c27b0; }
+  #btn-mode1 { background: #005bac; }
+  #btn-mode2 { background: #ff8c00; }
+  #btn-rojo { background: #3949ab; }
+  #btn-sotsu { background: linear-gradient(135deg,#b8860b,#daa520); }
+  #btn-tutorial { background: #4caf50; }
+  #btn-mode3 { background: #555555; }
+  .hidden { display: none !important; opacity: 0; pointer-events: none; }
+
+  #timer-board { font-size: 22px; color: #d32f2f; font-weight: bold; margin-bottom: 10px; background: #ffebee; padding: 8px; border-radius: 8px; border: 2px solid #ef5350; text-align: center;}
+
+  #status-board { background: #333; color: #fff; padding: 8px 14px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; border-left: 8px solid #ff8c00; transition: 0.3s; font-size: 13px; min-height: 84px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: left; line-height: 1.45; overflow: hidden; white-space: pre-line;}
+  .alert { border-left-color: #d32f2f !important; background: #fff5e6 !important; color: #d32f2f !important; }
+  .success { border-left-color: #005bac !important; background: #e6f0ff !important; color: #005bac !important; }
+  .warning { border-left-color: #ffeb3b !important; background: #fffde7 !important; color: #f57f17 !important; }
+
+  #view-area { width: 100%; background: #f5f5f5; border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 15px; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; transition: all 0.3s; height: 320px;}
+  #side-view { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: relative; min-height: 250px;}
+  #lens-wrapper { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 5; text-align: center; cursor: pointer; }
+  .lens-guide { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: bold; color: #005bac; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px; white-space: nowrap; transition: opacity 0.3s;}
+  #revolver-base { width: 60px; height: 15px; background: #444; border-radius: 10px 10px 0 0; margin: 0 auto;}
+  #active-lens { width: 28px; border: 2px solid #222; border-radius: 0 0 5px 5px; color: white; font-size: 12px; font-weight: bold; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; margin: 0 auto; transition: all 0.3s; }
+  .lens-type-0 { height: 35px; background: #888; } .lens-type-1 { height: 57px; background: #ffcc00; color: black !important; } .lens-type-2 { height: 85px; background: #d32f2f; }
+  #stage-obj { width: 180px; height: 12px; background: #444; position: absolute; bottom: 19px; left: 50%; transform: translateX(-50%); transition: bottom 0.2s linear; }
+  #slide-obj { width: 80px; height: 6px; background: rgba(180, 230, 255, 0.6); border: 1px solid #005bac; position: absolute; top: -7px; left: 50px; opacity: 0; transition: opacity 0.3s; }
+  .slide-set { opacity: 1 !important; }
+  #eye-view { display: none; width: 100%; height: 100%; background: black; align-items: center; justify-content: center; }
+  #eyepiece-circle { background: white; border-radius: 50%; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; transform: rotate(180deg); transition: all 0.3s; width: 280px; height: 280px; }
+
+  .control-group { margin-bottom: 10px; padding: 12px; background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; text-align: left; font-size: 14px;}
+  .btn-box { display: flex; flex-wrap: wrap; gap: 8px; }
+  button.op-btn { flex: 1; min-width: 45px; padding: 10px 5px; border-radius: 6px; border: none; font-weight: bold; font-family: inherit; cursor: pointer; background: #eee; color: #333; border-bottom: 4px solid #ccc; transition: 0.1s;}
+  button.op-btn:active { border-bottom: 0; transform: translateY(4px); }
+  button:disabled { background: #e0e0e0 !important; border-bottom-color: #ccc !important; color: #999 !important; cursor: not-allowed; transform: none !important; animation:none !important;}
+  button.danger { background: #ff8c00; color: white; border-bottom-color: #cc7000; }
+  button.action { background: #005bac; color: white; border-bottom-color: #00407a; }
+  button.highlight { background: #9c27b0; color: white; border-bottom-color: #7b1fa2; animation: pulse 1.5s infinite;}
+  @keyframes pulse { 0% { filter: brightness(1); } 50% { filter: brightness(1.3); } 100% { filter: brightness(1); } }
+
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 30px; background: transparent; cursor: pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #005bac; cursor: pointer; margin-top: -8px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);}
+  input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #ccc; border-radius: 4px; }
+
+  .rescue-box { text-align: left; background: #fff5e6; border-left: 5px solid #ff8c00; padding: 15px; margin-bottom: 15px; }
+
+  /* 学科教習 */
+  #gakka-canvas-wrap{width:100%;background:#0d1b2a;border-radius:10px;border:2px solid #90a4ae;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  #gakka-canvas{display:block;max-width:100%;height:auto;}
+  #gakka-qbox{background:#e0f2f1;border-left:5px solid #00897b;padding:12px;border-radius:8px;margin-bottom:10px;font-size:15px;font-weight:bold;line-height:1.6;min-height:64px;}
+  .yosou-btns{display:flex;gap:8px;margin-bottom:10px;}
+  .yosou-btns button{flex:1;padding:12px;border-radius:8px;border:none;border-bottom:4px solid #00695c;background:#00897b;color:#fff;font-family:inherit;font-size:15px;font-weight:bold;cursor:pointer;}
+  #gakka-controls{margin-bottom:10px;}
+  .pad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,44px);gap:6px;justify-content:center;}
+  .pad button{border:none;border-bottom:4px solid #00407a;background:#005bac;color:#fff;border-radius:8px;font-family:inherit;font-weight:bold;font-size:16px;cursor:pointer;}
+  #gakka-meter{display:flex;gap:8px;margin:8px 0;}
+  #gakka-meter .m{flex:1;background:#fff;border:1px solid #ddd;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:bold;text-align:center;}
+  #gakka-meter .m span{display:block;font-size:15px;}
+
+  /* 路上教習・事件 */
+  #jiken-flash{background:#b71c1c;color:#fff;text-align:center;font-size:22px;font-weight:bold;padding:10px;border-radius:8px;margin-bottom:10px;animation:jflash .5s 3;}
+  @keyframes jflash{50%{background:#ff5252;}}
+  #jiken-text{background:#f5f5f5;padding:16px;border-radius:8px;font-size:16px;font-weight:bold;line-height:1.7;margin-bottom:10px;border:2px solid #b71c1c;}
+  .jiken-choices button{display:block;width:100%;padding:13px;margin-bottom:8px;border-radius:8px;border:none;border-bottom:4px solid #283593;background:#3949ab;color:#fff;font-family:inherit;font-size:15px;font-weight:bold;cursor:pointer;text-align:left;}
+  .jiken-choices button.right{background:#2e7d32;border-bottom-color:#1b5e20;}
+  .jiken-choices button.wrong{background:#c62828;border-bottom-color:#8e0000;}
+  .jtimer{height:12px;background:#eee;border-radius:6px;overflow:hidden;margin-bottom:10px;}
+  .jtimer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff5252,#b71c1c);}
+  .jtimer.run i{animation:jt linear forwards;}
+  @keyframes jt{from{width:100%}to{width:0}}
+  #jiken-kaisetsu{background:#fffde7;border-left:5px solid #f9a825;padding:12px;border-radius:8px;font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .jikenbo{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+  .jikenbo .jb{background:#e8eef7;border:2px solid #b0bec5;border-radius:8px;padding:6px 4px;font-size:10px;text-align:center;font-weight:bold;color:#90a4ad;}
+  .jikenbo .jb.get{background:#e8eaf6;border-color:#3949ab;color:#283593;}
+  .jikenbo .jb .n{font-size:16px;display:block;}
+
+  #incident-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
+  #incident-ov.on{display:flex;}
+  #incident-panel{background:#fff;border-radius:14px;padding:20px;max-width:460px;width:100%;box-shadow:0 15px 50px rgba(0,0,0,.4);}
+
+  /* 認定証・免許証 */
+  #license-screen { text-align: center; position: relative; overflow: hidden; padding: 20px 0;}
+  .license-title { font-size: 28px; font-weight: bold; background: linear-gradient(45deg, #FF1493, #3f51b5, #00bcd4, #4caf50, #ff9800); -webkit-background-clip: text; background-clip:text; color: transparent; animation: rainbow 3s infinite linear; margin-top:0;}
+  .license-card { width: 90%; margin: 0 auto; border-radius: 15px; padding: 25px; text-align: left; position: relative; z-index: 10; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-size: 16px; box-sizing:border-box;}
+  .license-card::before { content: "🔬"; position: absolute; top: 15px; right: 20px; font-size: 40px; opacity: 0.8; }
+  .card-bronze { background: linear-gradient(135deg, #eceff1, #cfd8dc); border: 3px solid #b0bec5; }
+  .card-silver { background: linear-gradient(135deg, #ffffff, #e0e0e0); border: 3px solid #9e9e9e;}
+  .card-gold { background: linear-gradient(135deg, #fffde7, #fff59d, #ffd54f, #fffde7); background-size: 200% 200%; border: 4px solid #fbc02d; animation: shine 3s infinite linear;}
+  @keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+  @keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+  .confetti { position: absolute; font-size: 24px; animation: fall 3s infinite linear; z-index: 1;}
+  @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1;} 100% { transform: translateY(150vh) rotate(360deg); opacity: 0;} }
+
+  #grad-license{background:#fff;border:4px double #333;border-radius:10px;padding:20px;width:92%;margin:0 auto;text-align:left;font-size:14px;position:relative;z-index:10;box-sizing:border-box;}
+  #grad-license h3{margin:0 0 8px;text-align:center;font-size:20px;letter-spacing:6px;border-bottom:2px solid #333;padding-bottom:6px;}
+  #grad-license table{width:100%;border-collapse:collapse;font-size:13px;}
+  #grad-license td{border:1px solid #999;padding:5px 8px;}
+  #grad-license td.h{background:#f0f0f0;font-weight:bold;width:88px;white-space:nowrap;}
+  #grad-photo{position:absolute;right:18px;top:52px;width:64px;height:80px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-size:34px;background:#fafafa;}
+  .grad-footer{font-size:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .inkan{border:2px solid #d32f2f;color:#d32f2f;border-radius:50%;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;transform:rotate(-8deg);}
+
+  .version-footer { text-align: right; font-size: 11px; color: #999; margin-top: 15px; border-top: 1px dashed #eee; padding-top: 5px; }
+  .plabel-txt{font-size:11px;fill:#37474f;font-weight:bold;font-family:inherit;}
+  .kyokan{font-size:13px;background:#e8eaf6;border-left:4px solid #1a237e;padding:8px 12px;border-radius:6px;margin-bottom:10px;font-weight:bold;}
+
+  #parts-qbox{background:#f5f5f5;padding:12px;border-radius:8px;margin-bottom:12px;font-size:16px;font-weight:bold;text-align:center;}
+  .parts-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .parts-choices button{padding:14px 8px;border-radius:8px;border:none;border-bottom:4px solid #ccc;background:#eee;font-family:inherit;font-size:15px;font-weight:bold;cursor:pointer;text-align:left;}
+  .parts-choices button.right{background:#4caf50;color:#fff;border-bottom-color:#2e7d32;}
+  .parts-choices button.wrong{background:#d32f2f;color:#fff;border-bottom-color:#9a0007;}
+  .hlring{fill:none;stroke:#ff1493;stroke-width:4;stroke-dasharray:9 7;animation:hlspin 6s linear infinite,hlpulse 1.1s ease-in-out infinite;}
+  @keyframes hlspin{to{stroke-dashoffset:-220}}
+  @keyframes hlpulse{50%{stroke-width:7;opacity:.55}}
+  .burner-mount{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+  svg.micro{height:100%;max-width:100%;}
+
+  @media print{
+    body *{visibility:hidden;}
+    #license-screen, #license-screen *{visibility:visible;}
+    #license-screen{position:absolute;left:0;top:0;width:100%;}
+    .confetti,#confetti-container,.license-title,#license-screen .menu-btn,#print-btn{display:none !important;}
+    #grad-license{border:4px double #000;box-shadow:none;width:100%;}
+    .inkan{-webkit-print-color-adjust:exact;}
+  }
+
+  .simulator-layout { display: flex; flex-direction: column; gap: 15px; }
+  .simulator-layout > .left-col, .simulator-layout > .right-col { width: 100%; }
+  @media (min-width: 768px) and (orientation: portrait) {
+    #app-container { max-width: 720px; padding: 30px; }
+    h1 { font-size: 26px; }
+    #view-area { height: 450px; }
+    #eyepiece-circle { width: 380px; height: 380px; }
+  }
+  @media (min-width: 768px) and (orientation: landscape) and (min-height: 501px) {
+    #app-container { max-width: 1000px; padding: 25px; }
+    .simulator-layout { flex-direction: row; align-items: stretch; }
+    .simulator-layout > .left-col { flex: 1.2; min-width: 0; }
+    .simulator-layout > .right-col { flex: 1; min-width: 320px; display: flex; flex-direction: column; overflow-y: auto; max-height: 560px; padding-right: 10px; }
+    #view-area { margin-bottom: 0; height: 100%; min-height: 450px; }
+    #eyepiece-circle { width: 360px; height: 360px; }
+    h1 { font-size: 24px; }
+  }
+  @media (orientation: landscape) and (max-height: 500px) {
+    body { padding: 5px; padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+    #app-container { max-width: 100% !important; padding: 10px; }
+    .simulator-layout { flex-direction: row; align-items: stretch; gap: 10px;}
+    .simulator-layout > .left-col { flex: 1; min-width: 0; }
+    .simulator-layout > .right-col { flex: 1; min-width: 280px; display: flex; flex-direction: column; overflow-y: auto; max-height: calc(100vh - 90px); padding-right: 5px; }
+    h1 { font-size: 16px; margin-bottom: 5px; padding-bottom: 5px;}
+    #status-board { padding: 4px 10px; font-size: 11px; margin-bottom: 8px; min-height: 58px;}
+    #view-area { height: calc(100vh - 100px); min-height: 220px; margin-bottom: 0;}
+    #eyepiece-circle { width: 200px; height: 200px; }
+    .control-group { padding: 8px; margin-bottom: 8px;}
+    button.op-btn { padding: 6px 4px; font-size: 12px; }
+    .btn-box { gap: 4px; }
+    input[type="range"] { height: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app-container">
+  <h1><span>🔬 顕微鏡教習所</span> <span class="version-badge">v1.0</span></h1>
+
+  <!-- メニュー -->
+  <div id="menu-screen">
+    <div class="stage-label">はじめに</div>
+    <button class="menu-btn" id="btn-tutorial" onclick="showScreen('tutorial-screen')">🔰 入所ガイダンス（絶対ルール）</button>
+    <div class="stage-label">第1段階（学科）</div>
+    <button class="menu-btn" id="btn-gakka" onclick="startGakka()">📖 学科教習「見え方のしくみ」（倒立像・倍率）</button>
+    <button class="menu-btn" id="btn-parts" onclick="startParts()">📝 学科試験（各部の名前＋手順ならべかえ）</button>
+    <div class="stage-label">第2段階（技能）</div>
+    <button class="menu-btn" id="btn-mode1" onclick="startMode(1)">🔬 技能教習Ⅰ タマネギの表皮 / 100倍</button>
+    <button class="menu-btn" id="btn-mode2" onclick="startMode(2)">⏱️ 技能教習Ⅱ ゾウリムシ / 400倍・タイムアタック</button>
+    <div class="stage-label">第3段階（路上）</div>
+    <button class="menu-btn" id="btn-rojo" onclick="startRojo()">🛣️ 路上教習「観察室は事件だらけ」</button>
+    <div class="stage-label">卒業</div>
+    <button class="menu-btn" id="btn-sotsu" onclick="startSotsu()">🎓 卒業検定（ノーヒント通し＋抜き打ち事件）</button>
+    <div class="stage-label">こまったとき</div>
+    <button class="menu-btn" id="btn-mode3" onclick="showScreen('rescue-screen')">🆘 トラブル逆引きガイド</button>
+    <p style="text-align:right;"><button onclick="resetProgress()" style="font-family:inherit;font-size:11px;color:#999;background:none;border:none;cursor:pointer;text-decoration:underline;">教習記録をリセット</button></p>
+  </div>
+
+  <!-- ガイダンス -->
+  <div id="tutorial-screen" class="hidden">
+    <h2 style="color: #4caf50;">🔰 顕微鏡の絶対ルール</h2>
+    <div class="rescue-box" style="border-color:#4caf50;">
+      <h3 style="margin-top:0; color:#2e7d32;">① 見え方は「上下左右が逆」（倒立像）</h3>
+      <p>見たい対象が視野の<strong>左上</strong>に見えているなら、プレパラートも<strong>左・上（奥）</strong>へ動かす。<strong>「見えている方向へ追いかける」</strong>イメージ。</p>
+    </div>
+    <div class="rescue-box" style="border-color:#4caf50;">
+      <h3 style="margin-top:0; color:#2e7d32;">② 観察は「低倍率から」／ピント合わせの順序</h3>
+      <p>1. 対物レンズを一番低い倍率にする<br>
+      2. 反射鏡を調節して視野全体を明るくする<br>
+      3. プレパラートをのせ、横から見て対物レンズを近づける<br>
+      4. 覗きながら<strong>遠ざける方向</strong>にねじを回してピントを合わせる<br>
+      5. 最後に<strong>しぼり</strong>で、はっきり見えるように調節する</p>
+    </div>
+    <div class="rescue-box" style="border-color:#d32f2f;">
+      <h3 style="margin-top:0; color:#d32f2f;">🚫 一発免停（破損・危険）</h3>
+      <p>・覗きながら「近づける」方向にねじを回す（レンズ激突！）<br>
+      ・高倍率で「粗動ねじ（大きく動く）」を触る<br>
+      ・対象を「ど真ん中」に置かないまま高倍率に切り替える（見失う）<br>
+      ・反射鏡で直射日光を反射させて覗く（目を痛める）</p>
+    </div>
+    <div class="kyokan">🦅鷹目教官「卒業検定に受かれば、本物の顕微鏡をのぞかせてやる。順に進め。」</div>
+    <button class="menu-btn" style="background:#555; margin-top:10px;" onclick="location.reload()">トップに戻る</button>
+  </div>
+
+  <!-- 学科教習 -->
+  <div id="gakka-screen" class="hidden">
+    <h2 style="color:#00897b; margin-top:0;">📖 学科教習「見え方のしくみ」</h2>
+    <div id="gakka-qbox">…</div>
+    <div class="yosou-btns hidden" id="gakka-yosou">
+      <button id="gakka-y0" onclick="gakkaYosou(0)"></button>
+      <button id="gakka-y1" onclick="gakkaYosou(1)"></button>
+    </div>
+    <div id="gakka-canvas-wrap"><canvas id="gakka-canvas" width="340" height="260"></canvas></div>
+    <div id="gakka-meter" class="hidden">
+      <div class="m">見える範囲<span id="gm-range">—</span></div>
+      <div class="m">明るさ<span id="gm-bright">—</span></div>
+    </div>
+    <div id="gakka-controls"></div>
+    <button class="menu-btn hidden" id="gakka-next" style="background:#00897b;" onclick="gakkaNext()">つぎへ ▶</button>
+    <button class="menu-btn" style="background:#555;" onclick="location.reload()">トップに戻る</button>
+  </div>
+
+  <!-- 学科試験 -->
+  <div id="parts-screen" class="hidden">
+    <h2 style="color:#9c27b0;">📝 学科試験（各部の名前）</h2>
+    <div id="parts-qbox">問題</div>
+    <div style="width:100%;height:300px;background:#f5f5f5;border:2px solid #ccc;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;">
+      <div class="burner-mount" id="parts-mount"></div>
+    </div>
+    <div class="parts-choices" id="parts-choices"></div>
+    <div id="parts-result" class="hidden" style="text-align:center;margin-top:15px;">
+      <p id="parts-result-text" style="font-size:18px;font-weight:bold;"></p>
+      <button class="menu-btn" style="background:#9c27b0;" onclick="startParts()">もう一度挑戦</button>
+      <button class="menu-btn" style="background:#555;" onclick="location.reload()">トップに戻る</button>
+    </div>
+  </div>
+
+  <!-- クイズゲート -->
+  <div id="quiz-screen" class="hidden">
+    <h2>📝 教習前リマインド・クイズ</h2>
+    <div style="background:#f5f5f5; padding:20px; border-radius:8px; margin-bottom:20px;">
+      <p id="quiz-text" style="font-size:18px; font-weight:bold; line-height: 1.8;"></p>
+    </div>
+    <button class="menu-btn" id="quiz-ans0" style="background:#005bac;" onclick="answerQuiz(0)"></button>
+    <button class="menu-btn" id="quiz-ans1" style="background:#555;" onclick="answerQuiz(1)"></button>
+  </div>
+
+  <!-- 路上教習 -->
+  <div id="rojo-screen" class="hidden">
+    <h2 style="color:#3949ab;margin-top:0;">🛣️ 路上教習「観察室は事件だらけ」</h2>
+    <div class="jikenbo" id="jikenbo"></div>
+    <div id="jiken-flash" class="hidden">⚠️ 事件発生！</div>
+    <div class="jtimer hidden" id="jiken-timer"><i></i></div>
+    <div id="jiken-text"></div>
+    <div class="jiken-choices" id="jiken-choices"></div>
+    <div id="jiken-kaisetsu" class="hidden"></div>
+    <button class="menu-btn hidden" id="jiken-next" style="background:#3949ab;" onclick="nextJiken()">つぎの事件へ ▶</button>
+    <div id="rojo-result" class="hidden" style="text-align:center;">
+      <p id="rojo-result-text" style="font-size:17px;font-weight:bold;"></p>
+      <button class="menu-btn" style="background:#555;" onclick="location.reload()">トップに戻る</button>
+    </div>
+    <button class="menu-btn" id="rojo-quit" style="background:#9e9e9e;" onclick="location.reload()">中断してトップに戻る</button>
+  </div>
+
+  <!-- レスキュー -->
+  <div id="rescue-screen" class="hidden">
+    <h2>🆘 トラブル逆引きガイド</h2>
+    <div class="rescue-box"><h3 style="margin-top:0; color:#d32f2f;">❓ ピントが合わない／見えない</h3>
+      <p>① 横から見て、レンズをギリギリまで近づける。<br>② 覗きながら「遠ざける方向」にねじを回す。</p></div>
+    <div class="rescue-box"><h3 style="margin-top:0; color:#d32f2f;">❓ 高倍率にしたら真っ暗</h3>
+      <p>① しぼりを開いて光を多く入れる（反射鏡も調整）。<br>② 低倍率のとき対象を「ど真ん中」に置いていないと高倍率で見失う。</p></div>
+    <div class="rescue-box"><h3 style="margin-top:0; color:#d32f2f;">❓ まるい輪が見える（生物？）</h3>
+      <p>くっきりした黒いふちの丸は<strong>気泡</strong>のことが多い。プレパラートを動かして、いっしょに動くか確かめる。</p></div>
+    <div class="rescue-box"><h3 style="margin-top:0; color:#d32f2f;">❓ レンズがくもって見えにくい</h3>
+      <p>指で触らず、<strong>専用のレンズ紙</strong>でそっとふく。ティッシュや服でこすらない。</p></div>
+    <button class="menu-btn" style="background:#9e9e9e;" onclick="location.reload()">トップに戻る</button>
+  </div>
+
+  <!-- 認定証・免許証 -->
+  <div id="license-screen" class="hidden">
+    <div id="confetti-container"></div>
+    <h2 class="license-title" id="license-h2">🎉 操作技能 認定！ 🎉</h2>
+    <div id="license-card" class="license-card card-bronze">
+      <h3 style="margin-top:0; border-bottom: 2px solid #333; padding-bottom:5px; font-size:20px;">顕微鏡操作 認定証</h3>
+      <p><strong>氏名：</strong> <span id="license-name" onclick="editName()" style="border-bottom:1px dashed #999; cursor:pointer;">未来の科学者</span> 殿 <span style="font-size:11px;color:#888;">(タップで変更)</span></p>
+      <p><strong>ランク：</strong> <span id="license-rank" style="font-size:26px; font-weight:bold; color:#a0a0a0;">ブロンズ認定</span> <span id="crown-icon">🥉</span></p>
+      <p id="license-time-wrap" style="font-size:18px;"><strong>クリアタイム：</strong> <span id="license-time" style="font-size:22px; color:#d32f2f; font-weight:bold;">-</span> 秒</p>
+      <p style="font-size:13px; color:#555; margin-top:15px; border-top: 1px dashed #999; padding-top:10px;">上記のとおり、安全かつ正確な顕微鏡操作の技能を有することを証明する。</p>
+    </div>
+
+    <div id="grad-license" class="hidden">
+      <h3>顕微鏡免許証</h3>
+      <div id="grad-photo">🔬</div>
+      <table>
+        <tr><td class="h">氏名</td><td><span id="grad-name" onclick="editName()" style="cursor:pointer;border-bottom:1px dashed #999;">未来の科学者</span></td></tr>
+        <tr><td class="h">交付日</td><td id="grad-date">—</td></tr>
+        <tr><td class="h">番号</td><td id="grad-no">—</td></tr>
+        <tr><td class="h">種類</td><td>光学顕微鏡（実験用）</td></tr>
+        <tr><td class="h">条件等</td><td><strong>低倍率から観察・直射日光をさけるに限る</strong></td></tr>
+        <tr><td class="h">検定タイム</td><td><span id="grad-time">—</span> 秒<span id="grad-incident-note"></span></td></tr>
+        <tr><td class="h">有効期限</td><td>中学校卒業まで有効</td></tr>
+      </table>
+      <div class="grad-footer">
+        <span>上記の者に、<strong>本物の顕微鏡での観察</strong>に進むことを許可する。<br>顕微鏡教習所長　鷹目</span>
+        <span class="inkan">鷹目<br>之印</span>
+      </div>
+    </div>
+
+    <div class="kyokan hidden" id="license-kyokan" style="margin-top:14px;width:90%;margin-left:auto;margin-right:auto;text-align:left;"></div>
+    <button class="menu-btn hidden" id="print-btn" style="background:#005bac; margin-top:14px; position:relative; z-index:10;" onclick="window.print()">🖨 免許証を印刷して先生に見せる</button>
+    <button class="menu-btn" style="background:#555; margin-top:10px; position:relative; z-index:10;" onclick="location.reload()">トップに戻る</button>
+  </div>
+
+  <!-- 技能・卒検シミュレーター -->
+  <div id="simulator-screen" class="hidden">
+    <div id="timer-board" class="hidden">⏱️ 残り時間：<span id="time-text">180</span>秒</div>
+    <div id="status-board">【準備】プレパラートを置き、一番短いレンズ(4x)をセットせよ。</div>
+    <div class="simulator-layout">
+      <div class="left-col">
+        <div id="view-area">
+          <div id="side-view">
+            <div style="position: relative; width: 100%; max-width: 250px; height: 240px; margin: auto;">
+              <div id="lens-wrapper" onclick="rotateLens()">
+                <div class="lens-guide" id="lens-guide-text">🔄 クリックで回転</div>
+                <div id="revolver-base"></div>
+                <div id="active-lens" class="lens-type-1">10x</div>
+              </div>
+              <div id="stage-obj"><div id="slide-obj"></div></div>
+            </div>
+          </div>
+          <div id="eye-view">
+            <div id="eyepiece-circle">
+              <div id="slide-group" style="position:absolute; width:100%; height:100%; transition: transform 0.3s, filter 0.3s; transform-origin: center;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div id="panel-prep" class="control-group">
+          <button class="op-btn action" id="btn-set-slide" onclick="setSlide()" style="width:100%; margin-bottom:10px;">① プレパラートを置く</button>
+          <button class="op-btn danger" id="btn-lens-ok" onclick="completePrep()" style="width:100%;">② セット完了（点検）</button>
+        </div>
+        <div id="panel-main" class="control-group hidden">
+          <div class="btn-box" style="margin-bottom:10px;">
+            <button class="op-btn action" id="btn-side" onclick="switchView('side')" disabled>横から見る</button>
+            <button class="op-btn" id="btn-eye" onclick="switchView('eye')">レンズを覗く</button>
+          </div>
+          <div style="height: 45px; margin-bottom: 10px;">
+            <button class="op-btn hidden" id="btn-to-10x" onclick="switchTo10x()" style="width:100%; height:100%;">🔒 100倍切替（ピントを合わせよ）</button>
+            <button class="op-btn hidden" id="btn-to-40x" onclick="switchTo40x()" style="width:100%; height:100%;">🔒 400倍切替（ピントを合わせよ）</button>
+          </div>
+          <div style="display: flex; gap: 5px;">
+            <div style="flex: 1.2;">
+              <strong style="font-size:12px;">ねじ（ピント合わせ）:</strong>
+              <div class="btn-box" style="margin-bottom:5px;">
+                <button class="op-btn danger" onclick="moveFocus(-5, 1)">粗動 近</button>
+                <button class="op-btn action" onclick="moveFocus(5, 1)">粗動 遠</button>
+              </div>
+              <div class="btn-box">
+                <button class="op-btn danger" onclick="moveFocus(-1, 0)">微動 近</button>
+                <button class="op-btn action" onclick="moveFocus(1, 0)">微動 遠</button>
+              </div>
+            </div>
+            <div style="flex: 1; text-align:center; border-left: 1px solid #ccc; padding-left: 5px;">
+              <strong style="font-size:12px;">プレパラート移動<br>(倒立像注意):</strong>
+              <div class="btn-box" style="justify-content: center; margin-bottom: 5px;">
+                <button class="op-btn" style="min-width:40px; font-size:12px;" onclick="moveStage(0, -10)">↑<br>奥へ</button>
+              </div>
+              <div class="btn-box" style="justify-content: center;">
+                <button class="op-btn" style="min-width:40px; font-size:12px;" onclick="moveStage(-10, 0)">←<br>左</button>
+                <button class="op-btn" style="min-width:40px; font-size:12px;" onclick="moveStage(0, 10)">↓<br>手前</button>
+                <button class="op-btn" style="min-width:40px; font-size:12px;" onclick="moveStage(10, 0)">→<br>右</button>
+              </div>
+            </div>
+          </div>
+          <hr style="margin: 10px 0;">
+          <strong>しぼり（明るさ調整）：</strong>
+          <input type="range" id="iris" min="0" max="100" value="50" oninput="updateVisuals()">
+          <button class="op-btn action" id="btn-judge" onclick="judge()" style="width:100%; margin-top:10px; padding:15px; font-size:16px;">🏁 操作試験 終了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="version-footer">Ver 1.0 / 顕微鏡教習所（学科・技能・路上・卒検）</div>
+</div>
+
+<div id="incident-ov">
+  <div id="incident-panel">
+    <div style="background:#b71c1c;color:#fff;text-align:center;font-size:20px;font-weight:bold;padding:8px;border-radius:8px;margin-bottom:10px;">⚠️ 事件発生！</div>
+    <div class="jtimer" id="inc-timer"><i></i></div>
+    <div id="inc-text" style="font-size:15px;font-weight:bold;line-height:1.7;margin-bottom:10px;"></div>
+    <div class="jiken-choices" id="inc-choices"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   顕微鏡教習所 v1.0
+   技能シミュはken-men(顕微鏡・操作免許センター)の物理を継承
+   教科書: 東京書籍 新編 新しい科学2 単元2「生物の体のつくりと働き」P.88-89（顕微鏡の使い方）
+   倍率 = 対物(4x/10x/40x) × 接眼(10x) = 40/100/400倍
+========================================================= */
+
+/* ---------- 教習記録 ---------- */
+const PKEY = "kenbikyoSchool_v1";
+let P = loadP();
+function loadP(){ try{ return JSON.parse(localStorage.getItem(PKEY)) || {} }catch(e){ return {} } }
+function saveP(){ try{ localStorage.setItem(PKEY, JSON.stringify(P)); }catch(e){ /* storage不可でも進行は継続 */ } }
+function stamp(k){ P[k] = true; saveP(); }
+function resetProgress(){
+  if(confirm("教習記録（修了スタンプ）をすべて消します。よろしいですか？")){ localStorage.removeItem(PKEY); location.reload(); }
+}
+function decorateMenu(){
+  const map = { gakka:"btn-gakka", gakkaShiken:"btn-parts", ginou1:"btn-mode1", ginou2:"btn-mode2", rojo:"btn-rojo", sotsu:"btn-sotsu" };
+  for(const k in map){
+    if(P[k]){
+      const b = document.getElementById(map[k]);
+      if(b && !b.querySelector('.stamp')){ const s=document.createElement('span'); s.className='stamp'; s.innerText="修了"; b.appendChild(s); }
+    }
+  }
+  const ready = P.gakkaShiken && P.ginou1 && P.ginou2 && P.rojo;
+  const sb = document.getElementById('btn-sotsu');
+  if(!ready && !P.sotsu){ sb.classList.add('locked'); sb.innerHTML = "🔒 卒業検定（学科試験・技能Ⅰ・Ⅱ・路上を修了せよ）"; }
+}
+
+/* ---------- 鷹目教官 ---------- */
+const KYOKAN = {
+  fail: ["本物なら今ごろレンズが割れているぞ。", "君の目は、まだ節穴だな。出直せ。", "あわてる観察者は、何も見えん。", "そのプレパラート、無駄にしたな。"],
+  pass: ["…見る目はあるようだ。", "ふん、ピントだけは合っていたな。", "本物ののぞき窓は、今日の君なら任せられる。"],
+  inc_ok: ["冷静だ。", "よく気づいた。", "観察者は、あわてぬものだ。"]
+};
+function kyokanSay(pool){ return "🦅鷹目教官「" + pool[Math.floor(Math.random() * pool.length)] + "」"; }
+
+/* =========================================================
+   顕微鏡SVG（学科試験のパーツ発光クイズ用）
+========================================================= */
+function microSVG(){
+  return `
+<svg class="micro" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mtl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b0bec5"/><stop offset="45%" stop-color="#eceff1"/><stop offset="100%" stop-color="#90a4ae"/>
+    </linearGradient>
+  </defs>
+  <!-- 台 -->
+  <path d="M60 315 Q60 300 80 300 L150 300 L150 315 Z" fill="#78909c"/>
+  <ellipse cx="120" cy="316" rx="72" ry="12" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
+  <!-- アーム -->
+  <path d="M150 305 Q205 300 205 250 L205 120 Q205 95 180 92" fill="none" stroke="url(#mtl)" stroke-width="16" stroke-linecap="round"/>
+  <!-- 反射鏡 -->
+  <g id="p-mirror">
+    <ellipse cx="120" cy="292" rx="20" ry="9" fill="#cfd8dc" stroke="#546e7a" stroke-width="2" transform="rotate(-18 120 292)"/>
+    <line x1="120" y1="300" x2="120" y2="285" stroke="#546e7a" stroke-width="3"/>
+  </g>
+  <!-- しぼり -->
+  <g id="p-iris">
+    <ellipse cx="120" cy="262" rx="22" ry="7" fill="#90a4ae" stroke="#546e7a" stroke-width="2"/>
+    <circle cx="120" cy="262" r="6" fill="#37474f"/>
+  </g>
+  <!-- ステージ -->
+  <g id="p-stage">
+    <rect x="78" y="234" width="104" height="12" rx="3" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
+    <rect x="112" y="230" width="16" height="6" fill="#37474f"/>
+    <rect x="96" y="228" width="22" height="5" rx="2" fill="#ff8a65"/>
+    <rect x="106" y="238" width="10" height="4" fill="#455a64"/>
+  </g>
+  <!-- レボルバー -->
+  <g id="p-revolver">
+    <ellipse cx="140" cy="182" rx="30" ry="12" fill="#607d8b" stroke="#37474f" stroke-width="2"/>
+    <ellipse cx="140" cy="177" rx="30" ry="12" fill="#78909c" stroke="#37474f" stroke-width="2"/>
+  </g>
+  <!-- 対物レンズ -->
+  <g id="p-objective">
+    <rect x="118" y="188" width="12" height="26" rx="3" fill="#455a64"/>
+    <rect x="136" y="188" width="12" height="34" rx="3" fill="#ffca28"/>
+    <rect x="154" y="188" width="12" height="42" rx="3" fill="#e53935"/>
+  </g>
+  <!-- 鏡筒 -->
+  <rect x="128" y="110" width="26" height="70" rx="6" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
+  <!-- 接眼レンズ -->
+  <g id="p-eyepiece">
+    <rect x="130" y="70" width="22" height="44" rx="5" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
+    <ellipse cx="141" cy="70" rx="11" ry="4" fill="#455a64"/>
+  </g>
+  <!-- 調節ねじ -->
+  <g id="p-knob">
+    <circle cx="205" cy="205" r="17" fill="#546e7a" stroke="#37474f" stroke-width="2"/>
+    <circle cx="205" cy="205" r="9" fill="#78909c"/>
+  </g>
+  <!-- ラベル -->
+  <text x="200" y="60" text-anchor="start" class="plabel-txt plabel">接眼レンズ</text>
+  <line class="plabel" x1="152" y1="80" x2="198" y2="58" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="196" y="150" text-anchor="start" class="plabel-txt plabel">鏡筒</text>
+  <line class="plabel" x1="154" y1="145" x2="194" y2="148" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="18" y="180" text-anchor="start" class="plabel-txt plabel">レボルバー</text>
+  <line class="plabel" x1="66" y1="180" x2="112" y2="180" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="18" y="210" text-anchor="start" class="plabel-txt plabel">対物レンズ</text>
+  <line class="plabel" x1="66" y1="208" x2="118" y2="205" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="18" y="240" text-anchor="start" class="plabel-txt plabel">ステージ</text>
+  <line class="plabel" x1="60" y1="238" x2="78" y2="240" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="18" y="266" text-anchor="start" class="plabel-txt plabel">しぼり</text>
+  <line class="plabel" x1="50" y1="264" x2="98" y2="262" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="18" y="296" text-anchor="start" class="plabel-txt plabel">反射鏡</text>
+  <line class="plabel" x1="50" y1="294" x2="100" y2="292" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="232" y="208" text-anchor="start" class="plabel-txt plabel">調節ねじ</text>
+  <line class="plabel" x1="222" y1="205" x2="230" y2="206" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <g id="hl" style="pointer-events:none;"></g>
+</svg>`;
+}
+function mountMicro(id){
+  document.querySelectorAll('.burner-mount').forEach(m=>m.innerHTML='');
+  document.getElementById(id).innerHTML = microSVG();
+}
+
+/* =========================================================
+   技能シミュレーター（ken-men物理を継承）
+   mode 1=技能Ⅰ(タマネギ,100倍,ブロンズ)
+   mode 2=技能Ⅱ(ゾウリムシ,400倍,クイズ+タイマー,金銀銅)
+   mode 4=卒業検定(400倍,ノーヒント,抜き打ち事件,免許証)
+========================================================= */
+const svgOnion = `
+  <svg viewBox="-100 -100 200 200" style="width:100%;height:100%;overflow:visible;">
+    <defs><pattern id="onion-cell" x="0" y="0" width="80" height="40" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="80" height="40" fill="#fce4ec" stroke="#ad1457" stroke-width="2"/>
+      <path d="M 0,20 Q 40,25 80,20" fill="none" stroke="#d81b60" stroke-width="0.5" opacity="0.4"/>
+      <circle cx="20" cy="15" r="4.5" fill="#880e4f" opacity="0.5"/>
+      <circle cx="60" cy="25" r="3.5" fill="#880e4f" opacity="0.4"/>
+    </pattern></defs>
+    <rect x="-500" y="-500" width="1000" height="1000" fill="url(#onion-cell)"/>
+    <g id="target-cell">
+      <rect x="-40" y="-20" width="80" height="40" fill="#f8bbd0" stroke="#880e4f" stroke-width="3"/>
+      <circle cx="-10" cy="5" r="6" fill="#4a148c"/>
+      <path d="M -40,0 Q 0,-10 40,0" fill="none" stroke="#880e4f" stroke-width="1.5" opacity="0.6"/>
+    </g>
+  </svg>`;
+const svgParamecium = `
+  <svg viewBox="-100 -100 200 200" style="width:100%;height:100%;overflow:visible;">
+    <defs><g id="para">
+      <ellipse cx="0" cy="0" rx="44" ry="21" fill="#d7e3c0" stroke="#7a8b5a" stroke-width="1.5" transform="rotate(-12)"/>
+      <ellipse cx="0" cy="0" rx="46" ry="23" fill="none" stroke="#9caf72" stroke-width="4" stroke-dasharray="1.5 3" transform="rotate(-12)"/>
+      <ellipse cx="-4" cy="-1" rx="9" ry="6" fill="#8d9e63" opacity="0.75" transform="rotate(-12)"/>
+      <circle cx="-22" cy="6" r="3.5" fill="#f0f6e6" stroke="#9caf72" stroke-width="0.8"/>
+      <circle cx="24" cy="-4" r="3.5" fill="#f0f6e6" stroke="#9caf72" stroke-width="0.8"/>
+      <path d="M -18,-8 Q 2,2 20,-4" fill="none" stroke="#7a8b5a" stroke-width="1.2" opacity="0.6" transform="rotate(-12)"/>
+    </g></defs>
+    <circle cx="40" cy="55" r="1.5" fill="#ccc"/><circle cx="-55" cy="40" r="1" fill="#bbb"/><circle cx="70" cy="-30" r="2" fill="#ddd"/>
+    <use href="#para" x="80" y="-60" transform="scale(0.55) rotate(-40)" opacity="0.35"/>
+    <use href="#para" x="-80" y="-80" transform="scale(0.6) rotate(60)" opacity="0.35"/>
+    <use href="#para" x="0" y="0" transform="scale(1.35) rotate(20)"/>
+  </svg>`;
+
+let currentMode = 1;
+let distance = 50, targetDistance = 15;
+let slideX = 60, slideY = 60;
+let currentLensType = 1;
+let isSlideSet = false, isGameOver = false, currentStep = 0;
+let timeLeft = 180, timerId = null;
+let incidentDone = false, incidentTimer = null;
+const crashLimits = [-1, 0, 14];
+
+const quizzes = [
+  { q: "倍率を上げる前に行うことは？", a: ["対象を視野の中央にする", "しぼりを閉じる"], c: 0 },
+  { q: "最初に見るべき対物レンズは？", a: ["10倍・40倍（長い）", "4倍（短い）"], c: 1 },
+  { q: "顕微鏡で見える像（見え方）の特徴は？", a: ["上下左右が逆（倒立像）", "そのまま（正立像）"], c: 0 },
+  { q: "高倍率でピントを合わせる時は？", a: ["粗動ねじを使う", "微動ねじだけを使う"], c: 1 }
+];
+
+function showScreen(id){
+  ['menu-screen','tutorial-screen','gakka-screen','parts-screen','quiz-screen','rescue-screen','license-screen','simulator-screen','rojo-screen']
+    .forEach(s => document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function startMode(mode){
+  currentMode = mode;
+  document.getElementById('slide-group').innerHTML = (mode === 1) ? svgOnion : svgParamecium;
+  if(mode === 2){
+    const q = quizzes[Math.floor(Math.random() * quizzes.length)];
+    document.getElementById('quiz-text').innerText = "Q. " + q.q;
+    document.getElementById('quiz-ans0').innerText = q.a[0];
+    document.getElementById('quiz-ans1').innerText = q.a[1];
+    document.getElementById('quiz-screen').dataset.correct = q.c;
+    showScreen('quiz-screen');
+  } else {
+    showScreen('simulator-screen');
+    document.getElementById('timer-board').classList.add('hidden');
+    resetSim();
+    updateGameState();
+  }
+}
+function startSotsu(){
+  const ready = (P.gakkaShiken && P.ginou1 && P.ginou2 && P.rojo) || P.sotsu;
+  if(!ready){ alert("🔒 卒業検定は、学科試験・技能Ⅰ・技能Ⅱ・路上教習をすべて修了してから！"); return; }
+  currentMode = 4;
+  document.getElementById('slide-group').innerHTML = svgParamecium;
+  showScreen('simulator-screen');
+  resetSim();
+  document.getElementById('timer-board').classList.remove('hidden');
+  startTimer();
+  scheduleIncident();
+  updateGameState();
+}
+function answerQuiz(idx){
+  if(idx == document.getElementById('quiz-screen').dataset.correct){
+    alert("⭕ 大正解！タイムアタックを開始します！");
+    showScreen('simulator-screen');
+    resetSim();
+    document.getElementById('timer-board').classList.remove('hidden');
+    startTimer();
+    updateGameState();
+  } else {
+    alert("❌ 【不正解】基本を間違えています。やり直し！");
+    location.reload();
+  }
+}
+
+function resetSim(){
+  distance = 50; targetDistance = 15; slideX = 60; slideY = 60;
+  currentLensType = 1; isSlideSet = false; isGameOver = false; currentStep = 0;
+  document.getElementById('panel-prep').classList.remove('hidden');
+  document.getElementById('panel-main').classList.add('hidden');
+  document.getElementById('side-view').style.display = 'flex';
+  document.getElementById('eye-view').style.display = 'none';
+  document.getElementById('btn-set-slide').disabled = false;
+  document.getElementById('slide-obj').classList.remove('slide-set');
+  document.getElementById('lens-guide-text').classList.remove('hidden');
+  const lensEl = document.getElementById('active-lens');
+  lensEl.className = 'lens-type-1'; lensEl.innerText = '10x';
+  document.getElementById('iris').value = 50; document.getElementById('iris').disabled = false;
+  document.getElementById('view-area').style.borderColor = '#ccc';
+  const jb = document.getElementById('btn-judge');
+  jb.innerText = "🏁 操作試験 終了"; jb.className = "op-btn action"; jb.setAttribute("onclick","judge()");
+  updateStagePosition(); updateVisuals();
+}
+
+function startTimer(){
+  if(timerId === null){
+    timerId = setInterval(() => {
+      timeLeft--;
+      document.getElementById('time-text').innerText = timeLeft;
+      if(timeLeft <= 0){ clearInterval(timerId); timerId=null; gameOver("❌ タイムアップ！不合格です。"); }
+    }, 1000);
+  }
+}
+function pauseTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+
+function setSlide(){
+  isSlideSet = true;
+  document.getElementById('btn-set-slide').disabled = true;
+  document.getElementById('slide-obj').classList.add('slide-set');
+  updateGameState();
+}
+function rotateLens(){
+  if(isGameOver || currentStep > 0) return;
+  currentLensType = (currentLensType + 1) % 3;
+  const lensEl = document.getElementById('active-lens');
+  lensEl.className = `lens-type-${currentLensType}`;
+  lensEl.innerText = currentLensType===0?"4x":currentLensType===1?"10x":"40x";
+}
+function msgBoard(txt){ document.getElementById('status-board').innerText = txt; }
+function boardClass(c){ document.getElementById('status-board').className = c; }
+
+function completePrep(){
+  if(!isSlideSet){ alert("プレパラートを置いてください。"); return; }
+  if(currentLensType !== 0){ alert("⚠️ 最初の観察は「一番短い4xレンズ」で行うのが鉄則です！"); return; }
+  currentStep = 1;
+  document.getElementById('lens-guide-text').classList.add('hidden');
+  document.getElementById('panel-prep').classList.add('hidden');
+  document.getElementById('panel-main').classList.remove('hidden');
+  updateStagePosition(); updateVisuals(); updateGameState();
+}
+function updateStagePosition(){
+  const stagePos = 119 - (distance * 2);
+  document.getElementById('stage-obj').style.bottom = stagePos + "px";
+}
+function moveStage(dx, dy){
+  if(isGameOver || currentStep < 2) return;
+  slideX += dx; slideY += dy;
+  slideX = Math.max(-100, Math.min(100, slideX));
+  slideY = Math.max(-100, Math.min(100, slideY));
+  updateGameState(); updateVisuals();
+}
+function switchTo10x(){
+  if(Math.abs(slideX) > 40 || Math.abs(slideY) > 40){
+    gameOver("❌【見失った！】対象を視野の中央付近に置かずに倍率を上げたため、視野外に消え去りました！"); return;
+  }
+  currentStep = 3;
+  document.getElementById('btn-to-10x').classList.add('hidden');
+  currentLensType = 1;
+  const lensEl = document.getElementById('active-lens'); lensEl.className='lens-type-1'; lensEl.innerText='10x';
+  distance += (Math.random() < 0.5 ? 1 : -1);
+  updateStagePosition(); updateVisuals(); updateGameState();
+}
+function switchTo40x(){
+  if(Math.abs(slideX) > 10 || Math.abs(slideY) > 10){
+    gameOver("❌【見失った！】対象を『ど真ん中』に置かずに400倍にしたため、視野外に消え去りました！"); return;
+  }
+  currentStep = 4;
+  document.getElementById('btn-to-40x').classList.add('hidden');
+  currentLensType = 2;
+  const lensEl = document.getElementById('active-lens'); lensEl.className='lens-type-2'; lensEl.innerText='40x';
+  distance += 1; // 必ず遠い安全側(16)へ。近側14だと微動1回で激突死する不公平を回避
+  updateStagePosition(); updateVisuals(); updateGameState();
+}
+function moveFocus(val, type){
+  if(isGameOver) return;
+  const isEyeView = document.getElementById('eye-view').style.display === 'flex';
+  if(isEyeView && val < 0 && type === 1){ gameOver("❌【一発免停】覗きながら粗動ねじで近づけましたね？レンズがプレパラートに衝突する危険操作です！"); return; }
+  if(currentStep >= 3 && type === 1){ gameOver("❌【一発免停】高倍率で粗動ねじを回しましたね！？ピントを完全に見失い、レンズが激突する危険な操作です！"); return; }
+  distance += val;
+  if(distance < 0) distance = 0;
+  if(distance > 50) distance = 50;
+  if(currentLensType !== 0 && distance <= crashLimits[currentLensType]){
+    distance = crashLimits[currentLensType];
+    updateStagePosition(); updateVisuals();
+    gameOver("❌【一発免停】ガシャン！レンズがプレパラートに衝突し破損しました！"); return;
+  }
+  updateStagePosition(); updateVisuals(); updateGameState();
+}
+function switchView(mode){
+  if(isGameOver) return;
+  if(mode === 'eye'){
+    if(currentStep === 1 && distance > 5){ alert("まだ遠すぎます！横から見て極限まで近づけて！"); return; }
+    if(currentStep < 2) currentStep = 2;
+    document.getElementById('side-view').style.display = 'none';
+    document.getElementById('eye-view').style.display = 'flex';
+    document.getElementById('btn-eye').disabled = true;
+    document.getElementById('btn-side').disabled = false;
+    document.getElementById('btn-side').classList.remove('action');
+  } else {
+    document.getElementById('side-view').style.display = 'flex';
+    document.getElementById('eye-view').style.display = 'none';
+    document.getElementById('btn-eye').disabled = false;
+    document.getElementById('btn-side').disabled = true;
+  }
+  updateGameState();
+}
+
+function updateGameState(){
+  if(isGameOver) return;
+  if(document.getElementById('simulator-screen').classList.contains('hidden')) return; // 画面遷移後の遅延コール無害化
+  const isEyeView = document.getElementById('eye-view').style.display === 'flex';
+  const focusDist = Math.abs(distance - targetDistance);
+  const posDist = Math.abs(slideX) <= 40 && Math.abs(slideY) <= 40;
+  const posStrict = Math.abs(slideX) <= 10 && Math.abs(slideY) <= 10;
+  const btn10x = document.getElementById('btn-to-10x');
+  const btn40x = document.getElementById('btn-to-40x');
+
+  // ★卒業検定はノーヒント
+  if(currentMode === 4){
+    let sub = "";
+    if(currentStep >= 4 && focusDist === 0 && posStrict) sub = "\n（検定官がうなずいた。🏁で申告せよ）";
+    else if(isEyeView && currentStep >= 2) sub = "\n（検定官がメモを取っている…）";
+    msgBoard("🎓 卒業検定中【ノーヒント】\n4x→ピント→中央→100倍→400倍→明るさ、を自分の力で行い🏁で申告せよ。" + sub);
+    boardClass(sub.includes('うなずいた') ? 'success' : '');
+    // ボタンの解放だけは通常どおり制御（下の共通処理へ流さず個別に）
+    if(isEyeView){
+      if(currentStep === 2){ btn10x.classList.remove('hidden'); btn10x.disabled = !(focusDist<=1 && posDist);
+        btn10x.innerText = btn10x.disabled?"🔒 100倍に切り替える":"🔍 100倍(対物10x)に切り替える"; btn10x.className = btn10x.disabled?"op-btn":"op-btn highlight"; }
+      else if(currentStep === 3){ btn10x.classList.add('hidden'); btn40x.classList.remove('hidden'); btn40x.disabled = !(focusDist===0);
+        btn40x.innerText = btn40x.disabled?"🔒 400倍に切り替える":"🔍 400倍(対物40x)に切り替える"; btn40x.className = btn40x.disabled?"op-btn":"op-btn danger highlight"; }
+      else if(currentStep >= 4){ btn40x.classList.add('hidden'); }
+    }
+    return;
+  }
+
+  if(currentStep === 0){
+    msgBoard("【準備】プレパラートを置き、一番短いレンズ(4x)をセットせよ。"); boardClass('');
+  }
+  else if(currentStep === 1){
+    if(distance <= 5){ msgBoard("⭕【OK】極限まで接近しました！「レンズを覗く」に切り替えてください。"); boardClass('success'); document.getElementById('btn-eye').disabled=false; }
+    else { msgBoard("⚠️【STEP 1】横から見て、粗動ねじでレンズを極限まで近づけよ！"); boardClass(''); document.getElementById('btn-eye').disabled=true; }
+  }
+  else if(currentStep === 2){
+    if(!isEyeView) return;
+    btn10x.classList.remove('hidden');
+    if(focusDist <= 1){
+      btn10x.disabled=false; btn10x.innerText="🔍 【STEP 3】100倍(対物10x)に切り替える"; btn10x.className="op-btn highlight";
+      if(posDist){ msgBoard("⭕【OK】対象が見えました！紫のボタンで「100倍」に切り替えてください。"); boardClass('success'); }
+      else { msgBoard("⚠️【注意】ピントは合っていますが、対象が視野から外れています！矢印ボタンで探してください！"); boardClass('warning'); }
+    } else {
+      btn10x.disabled=true; btn10x.innerText="🔒 100倍切替（ピントを合わせよ）"; btn10x.className="op-btn";
+      if(distance === 50){ msgBoard("⚠️【警告】遠ざけすぎです。これ以上回してもピントは合いません。近づけ直してください。"); boardClass('alert'); }
+      else if(distance < targetDistance){ msgBoard("【STEP 2】最初はぼんやり見えます。微動ねじを「遠ざける」方向に回し、はっきり見える位置を探せ。"); boardClass(''); }
+      else { msgBoard("【STEP 2】遠ざけすぎました！「近づける」方向にねじを回して戻してください。"); boardClass(''); }
+    }
+  }
+  else if(currentStep === 3){
+    if(!isEyeView) return;
+    if(currentMode === 1){
+      btn40x.classList.add('hidden');
+      if(focusDist === 0 && posDist){ msgBoard("⭕【完璧】100倍のピントが合いました！しぼりで明るさを調整し、試験終了を押してください。"); boardClass('success'); }
+      else if(focusDist === 0){ msgBoard("⚠️【注意】ピントは合っていますが、対象が視野から外れています！矢印ボタンで探してください。"); boardClass('warning'); }
+      else { msgBoard("⚠️【STEP 3】100倍になりピントが少しズレました。微動ねじでピントを合わせよ！(粗動は免停)"); boardClass('alert'); }
+    } else {
+      btn40x.classList.remove('hidden');
+      if(focusDist === 0){
+        btn40x.disabled=false; btn40x.innerText="🔍 【STEP 4】400倍(対物40x)に切り替える"; btn40x.className="op-btn danger highlight";
+        if(posStrict){ msgBoard("⭕【OK】100倍のピントが合いました！対象を「ど真ん中」にしてから、赤ボタンで400倍に！"); boardClass('success'); }
+        else { msgBoard("⚠️【注意】対象が『ど真ん中』にありません！このまま400倍にすると確実に見失うぞ！"); boardClass('warning'); }
+      } else {
+        btn40x.disabled=true; btn40x.innerText="🔒 400倍切替（ピントを完璧に合わせよ）"; btn40x.className="op-btn";
+        msgBoard("【STEP 3】100倍になりピントが少しズレました。微動ねじで完璧に合わせよ！(粗動は免停)"); boardClass('alert');
+      }
+    }
+  }
+  else if(currentStep === 4){
+    if(!isEyeView) return;
+    if(focusDist === 0){
+      if(posStrict){ msgBoard("⭕【完璧】400倍のピントが合いました！しぼりで明るさを調整し、試験終了を押してください。"); boardClass('success'); }
+      else { msgBoard("⚠️【注意】ピントは合っていますが対象が視野から外れています！矢印で慎重に探せ！"); boardClass('warning'); }
+    } else { msgBoard("⚠️【STEP 4】400倍は激シビア！微動ねじだけで慎重にピントを探れ！"); boardClass('alert'); }
+  }
+}
+
+function updateVisuals(){
+  let scale = 1;
+  if(currentStep === 3) scale = 2.5;
+  if(currentStep >= 4) scale = 8;
+  const sg = document.getElementById('slide-group');
+  if(!sg) return;
+  sg.style.transform = `scale(${scale}) translate(${slideX}px, ${slideY}px)`;
+  let bm = 3;
+  if(currentStep === 3) bm = 6;
+  if(currentStep >= 4) bm = 15;
+  let blur = Math.min(Math.abs(distance - targetDistance) * bm, 15);
+  const irisVal = parseInt(document.getElementById('iris').value);
+  let base = 1.0;
+  if(currentStep === 3) base = 0.4;
+  if(currentStep >= 4) base = 0.1;
+  sg.style.filter = `blur(${blur}px) brightness(${base + irisVal/100})`;
+}
+
+function gameOver(txt){
+  isGameOver = true; pauseTimer();
+  if(incidentTimer){ clearTimeout(incidentTimer); incidentTimer=null; }
+  msgBoard(txt + "\n" + kyokanSay(KYOKAN.fail)); boardClass('alert');
+  document.querySelectorAll('.op-btn').forEach(b => b.disabled = true);
+  document.getElementById('iris').disabled = true;
+  const jb = document.getElementById('btn-judge');
+  jb.innerText = "トップへ戻る"; jb.disabled=false; jb.className="op-btn danger"; jb.setAttribute("onclick","location.reload()");
+  document.getElementById('view-area').style.borderColor = "#d32f2f";
+}
+
+function judge(){
+  if(isGameOver) return;
+  const requiredStep = currentMode === 1 ? 3 : 4;
+  const targetMag = currentMode === 1 ? "100倍" : "400倍";
+  if(currentStep < requiredStep){ alert(`❌ 不合格！まだ目標倍率「${targetMag}」での観察が終わっていません！`); return; }
+  const iris = parseInt(document.getElementById('iris').value);
+  const focusOK = Math.abs(distance - targetDistance) === 0;
+  const posOK = currentMode === 1 ? (Math.abs(slideX)<=40 && Math.abs(slideY)<=40) : (Math.abs(slideX)<=10 && Math.abs(slideY)<=10);
+  const irisOK = currentMode === 1 ? (iris>=40 && iris<=90) : (iris>=80);
+  if(!(focusOK && posOK && irisOK)){
+    let a = "❌ 不合格です。";
+    if(!focusOK) a += ` ${targetMag}でのピントが甘いです。`;
+    if(!posOK) a += " 対象が視野の中央にありません。";
+    if(!irisOK) a += ` 明るさが不適切です。しぼりを調整してください。`;
+    alert(a + " もう一度調整を！"); return;
+  }
+  pauseTimer();
+  if(incidentTimer){ clearTimeout(incidentTimer); incidentTimer=null; } // 卒検完了時に保留中の事件を止める
+  if(currentMode === 1){ stamp('ginou1'); showLicense("bronze"); }
+  else if(currentMode === 2){ const t=180-timeLeft; stamp('ginou2'); showLicense(t<=60?"gold":"silver", t); }
+  else { const t=180-timeLeft; stamp('sotsu'); showGradLicense(t); }
+}
+
+function showLicense(rank, timeUsed){
+  showScreen('license-screen'); createConfetti();
+  document.getElementById('license-h2').innerText = "🎉 操作技能 認定！ 🎉";
+  document.getElementById('license-card').classList.remove('hidden');
+  document.getElementById('grad-license').classList.add('hidden');
+  document.getElementById('print-btn').classList.add('hidden');
+  const kk = document.getElementById('license-kyokan'); kk.classList.remove('hidden'); kk.innerText = kyokanSay(KYOKAN.pass);
+  const card = document.getElementById('license-card');
+  const rankEl = document.getElementById('license-rank');
+  const crown = document.getElementById('crown-icon');
+  const timeWrap = document.getElementById('license-time-wrap');
+  document.getElementById('license-name').innerText = localStorage.getItem('kenbikyoName') || "未来の科学者";
+  if(rank === "bronze"){
+    rankEl.innerText="ブロンズ認定"; rankEl.style.color="#a0a0a0"; card.className="license-card card-bronze"; crown.innerText="🥉"; timeWrap.style.display="none";
+  } else {
+    document.getElementById('license-time').innerText = timeUsed; timeWrap.style.display="block";
+    if(rank === "gold"){ rankEl.innerText="特級 ゴールド認定"; rankEl.style.color="#fbc02d"; card.className="license-card card-gold"; crown.innerText="👑"; }
+    else { rankEl.innerText="シルバー認定"; rankEl.style.color="#9e9e9e"; card.className="license-card card-silver"; crown.innerText="🥈"; }
+  }
+}
+function showGradLicense(timeUsed){
+  showScreen('license-screen'); createConfetti();
+  document.getElementById('license-h2').innerText = "🎓 卒業検定 合格！ 🎓";
+  document.getElementById('license-card').classList.add('hidden');
+  document.getElementById('grad-license').classList.remove('hidden');
+  document.getElementById('print-btn').classList.remove('hidden');
+  const kk = document.getElementById('license-kyokan'); kk.classList.remove('hidden');
+  kk.innerText = "🦅鷹目教官「…卒業だ。だがな、本物ののぞき窓の向こうには、教科書に載っていない世界が広がっている。よく見ろ。」";
+  const d = new Date();
+  document.getElementById('grad-name').innerText = localStorage.getItem('kenbikyoName') || "未来の科学者";
+  document.getElementById('grad-date').innerText = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  document.getElementById('grad-no').innerText = "第" + d.getFullYear() + "-" + String(Math.floor(1000 + Math.random()*9000)) + "号";
+  document.getElementById('grad-time').innerText = timeUsed;
+  document.getElementById('grad-incident-note').innerText = incidentDone ? "（事件対応 1件含む）" : "";
+}
+function editName(){
+  const n = prompt("免許証に入れる名前は？", localStorage.getItem('kenbikyoName') || "");
+  if(n !== null && n.trim()){
+    localStorage.setItem('kenbikyoName', n.trim());
+    document.getElementById('license-name').innerText = n.trim();
+    document.getElementById('grad-name').innerText = n.trim();
+  }
+}
+function createConfetti(){
+  const c = document.getElementById('confetti-container'); c.innerHTML="";
+  const e = ['🎉','✨','🎊','🏆','⭐','🔬'];
+  for(let i=0;i<35;i++){ let d=document.createElement('div'); d.className='confetti'; d.innerText=e[i%e.length];
+    d.style.left=Math.random()*100+'vw'; d.style.animationDuration=(Math.random()*2+2)+'s'; d.style.animationDelay=Math.random()*2+'s'; c.appendChild(d); }
+}
+
+/* =========================================================
+   学科教習「見え方のしくみ」
+   S1 倒立像 / S2 倍率 / S3 ピント合わせの順序
+========================================================= */
+let gk = null, gkInterval = null;
+const GK = [
+  { yosou: "Q1. 視野の『右上』に見える生物を中央へ動かしたい。プレパラートはどっちへ動かす？",
+    opts: ["右上へ（見えている方向と同じ）", "左下へ（逆）"], correct: 0,
+    task: "▶ 十字ボタンでプレパラートを動かし、光る点を中央の輪に入れよう（倒立像に注意！）",
+    kaisetsu: "⭕正解は「見えている方向と同じ」。顕微鏡の像は上下左右が逆（倒立像）。プレパラートを右へ動かすと、見え方は左へ動く。だから視野で右上のものは、プレパラートを右上へ動かすと中央に来る。『見えている方へ追いかける』と覚えよう。" },
+  { yosou: "Q2. 倍率を上げると、見える範囲と明るさはどうなる？",
+    opts: ["せまく・暗くなる", "広く・明るくなる"], correct: 0,
+    task: "▶ スライダーで倍率を400倍まで上げてみよう。",
+    kaisetsu: "⭕顕微鏡の倍率＝対物レンズの倍率×接眼レンズの倍率。上げるほど見える範囲はせまく、視野は暗くなる。だから最初は必ず『低倍率』で広く探し、見つけてから倍率を上げる。暗くなったらしぼりで明るさを補う。" },
+  { yosou: "Q3. ピント合わせ。安全なのはどっち？",
+    opts: ["横から見て近づけ→覗いて遠ざける", "覗きながら近づける"], correct: 0,
+    task: "▶ 『横から近づける』→『覗いて遠ざける』の順にボタンを押してピントを合わせよう。",
+    kaisetsu: "⭕覗きながら近づけると、レンズとプレパラートの隙間が見えず、気づかず激突して割ってしまう。だから①横から見て限界まで近づけ、②覗きながら遠ざけてピントを探す。この順序は絶対だ。" }
+];
+
+function startGakka(){
+  showScreen('gakka-screen');
+  gk = { step:0, phase:'yosou', chosen:-1, ox:70, oy:-70, mag:0, holdSince:null,
+         sideState:0, done:false }; // sideState: 0初期,1近づけた,2ピント
+  gakkaShowStep();
+  if(gkInterval) clearInterval(gkInterval);
+  gkInterval = setInterval(gakkaTick, 40);
+}
+function gakkaShowStep(){
+  const s = GK[gk.step];
+  const q = document.getElementById('gakka-qbox');
+  const y = document.getElementById('gakka-yosou');
+  const nx = document.getElementById('gakka-next');
+  const meter = document.getElementById('gakka-meter');
+  const ctrl = document.getElementById('gakka-controls');
+  nx.classList.add('hidden'); meter.classList.add('hidden'); ctrl.innerHTML='';
+  if(gk.phase === 'yosou'){
+    q.innerHTML = "🤔 <strong>予想しよう</strong>　" + s.yosou;
+    document.getElementById('gakka-y0').innerText = s.opts[0];
+    document.getElementById('gakka-y1').innerText = s.opts[1];
+    y.classList.remove('hidden');
+  } else if(gk.phase === 'sousa'){
+    y.classList.add('hidden');
+    q.innerHTML = "🔬 <strong>確かめよう</strong>　" + s.task;
+    if(gk.step === 0){
+      ctrl.innerHTML = `<div class="pad">
+        <div></div><button onclick="gakkaMove(0,-1)">↑</button><div></div>
+        <button onclick="gakkaMove(-1,0)">←</button><button onclick="gakkaMove(0,1)">↓</button><button onclick="gakkaMove(1,0)">→</button></div>`;
+    } else if(gk.step === 1){
+      meter.classList.remove('hidden');
+      ctrl.innerHTML = `<div style="font-size:13px;font-weight:bold;">倍率：<span id="gk-mag">40</span>倍
+        <input type="range" min="0" max="2" step="1" value="0" oninput="gakkaMag(this.value)"></div>`;
+    } else {
+      ctrl.innerHTML = `<div class="btn-box">
+        <button class="op-btn action" id="gk-near" onclick="gakkaSide('near')">① 横から見て近づける</button>
+        <button class="op-btn danger" id="gk-far" onclick="gakkaSide('far')" disabled>② 覗いて遠ざける</button>
+        <button class="op-btn" id="gk-bad" onclick="gakkaSide('bad')">覗きながら近づける</button></div>`;
+    }
+  } else {
+    y.classList.add('hidden');
+    const hit = (gk.chosen === s.correct) ? "予想どおり！" : "予想と違ったね。それが実験だ。";
+    q.innerHTML = "💡 <strong>" + hit + "</strong><br>" + s.kaisetsu;
+    nx.classList.remove('hidden');
+    nx.innerText = (gk.step >= GK.length-1) ? "🎓 学科教習を修了する" : "つぎへ ▶";
+  }
+}
+function gakkaYosou(idx){ gk.chosen = idx; gk.phase='sousa'; gk.holdSince=null; gk.done=false;
+  gk.ox=70; gk.oy=-70; gk.mag=0; gk.sideState=0; gakkaShowStep(); }
+function gakkaNext(){
+  if(gk.step >= GK.length-1){
+    stamp('gakka');
+    alert("🎓 学科教習 修了！\n🦅鷹目教官「見え方のしくみを知った。次は各部の名前だ。学科試験へ進め。」");
+    gk.phase='free';
+    document.getElementById('gakka-qbox').innerHTML = "🔬 <strong>自由観察モード</strong>　十字ボタンやスライダーで、倒立像・倍率・ピントを自由に試してみよう。";
+    document.getElementById('gakka-next').classList.add('hidden');
+    document.getElementById('gakka-yosou').classList.add('hidden');
+    document.getElementById('gakka-meter').classList.remove('hidden');
+    document.getElementById('gakka-controls').innerHTML = `<div class="pad">
+      <div></div><button onclick="gakkaMove(0,-1)">↑</button><div></div>
+      <button onclick="gakkaMove(-1,0)">←</button><button onclick="gakkaMove(0,1)">↓</button><button onclick="gakkaMove(1,0)">→</button></div>
+      <div style="font-size:13px;font-weight:bold;margin-top:8px;">倍率：<span id="gk-mag">40</span>倍
+      <input type="range" min="0" max="2" step="1" value="0" oninput="gakkaMag(this.value)"></div>`;
+    return;
+  }
+  gk.step++; gk.phase='yosou'; gk.done=false; gakkaShowStep();
+}
+function gakkaMove(dx, dy){
+  gk.ox = Math.max(-90, Math.min(90, gk.ox + dx*15));
+  gk.oy = Math.max(-90, Math.min(90, gk.oy + dy*15));
+  // 視野中央＝実物が中央のとき（倒立でも中央は中央）
+  if(gk.phase==='sousa' && gk.step===0 && Math.abs(gk.ox)<=12 && Math.abs(gk.oy)<=12 && !gk.done){
+    gk.done=true; gk.phase='kaisetsu'; gakkaShowStep();
+  }
+}
+function gakkaMag(v){ gk.mag = parseInt(v);
+  const labels=["40","100","400"];
+  const mel=document.getElementById('gk-mag'); if(mel) mel.innerText=labels[gk.mag];
+  document.getElementById('gm-range').innerText = ["広い","ふつう","せまい"][gk.mag];
+  document.getElementById('gm-bright').innerText = ["明るい","ふつう","暗い"][gk.mag];
+  if(gk.phase==='sousa' && gk.step===1 && gk.mag===2 && !gk.done){ gk.done=true; gk.phase='kaisetsu'; gakkaShowStep(); }
+}
+function gakkaSide(a){
+  if(a==='near'){ gk.sideState=1; document.getElementById('gk-far').disabled=false; document.getElementById('gk-near').disabled=true; }
+  else if(a==='far'){ if(gk.sideState>=1){ gk.sideState=2; if(!gk.done){ gk.done=true; gk.phase='kaisetsu'; gakkaShowStep(); } } }
+  else if(a==='bad'){ gk.sideState=-1; setTimeout(()=>{ if(gk.sideState!==-1) return; gk.sideState=0;
+      if(gk.phase==='sousa'){ document.getElementById('gk-near').disabled=false; document.getElementById('gk-far').disabled=true; } }, 1100); }
+}
+function gakkaTick(){
+  if(!gk) return;
+  const c = document.getElementById('gakka-canvas'); if(!c) return;
+  const ctx = c.getContext('2d'); const W=c.width, H=c.height;
+  ctx.clearRect(0,0,W,H);
+  const st = (gk.phase==='free') ? 'free' : gk.step;
+
+  if(st===0 || st==='free'){
+    // 倒立像：左=実物(ステージ), 右=視野(見え方)
+    drawFieldPanel(ctx, 90, H/2, 70, "実物（ステージ上）", gk.ox, gk.oy, 1, false);
+    drawFieldPanel(ctx, 250, H/2, 70, "見え方（視野）", -gk.ox, -gk.oy, 1, true);
+    ctx.fillStyle="#fff"; ctx.font="bold 20px sans-serif"; ctx.textAlign="center";
+    ctx.fillText("→", 170, H/2+7);
+  } else if(st===1){
+    const sc = [1,1.7,3.4][gk.mag];
+    const r = [95,70,42][gk.mag];
+    drawFieldPanel(ctx, W/2, H/2, r, ["40倍","100倍","400倍"][gk.mag], 0, 0, sc, false, [1,0.6,0.28][gk.mag]);
+  } else if(st===2){
+    // 側面図：レンズとステージ
+    const lensY = gk.sideState===0?70 : gk.sideState<0?150 : 118;
+    ctx.strokeStyle="#78909c"; ctx.lineWidth=4;
+    ctx.beginPath(); ctx.moveTo(60,40); ctx.lineTo(60,200); ctx.stroke(); // 支柱
+    // ステージ
+    ctx.fillStyle="#607d8b"; ctx.fillRect(90,175,150,12);
+    ctx.fillStyle="rgba(180,230,255,0.7)"; ctx.fillRect(140,169,50,6); // プレパラート
+    // 対物レンズ
+    ctx.fillStyle= gk.sideState<0?"#e53935":"#455a64"; ctx.fillRect(150,lensY,30,55);
+    ctx.fillStyle="#fff"; ctx.font="bold 12px sans-serif"; ctx.textAlign="center";
+    ctx.fillText("対物レンズ", 165, lensY-6);
+    if(gk.sideState<0){ ctx.fillStyle="#ff5252"; ctx.font="bold 16px sans-serif"; ctx.fillText("⚠ ガシャン！激突！", W/2, 30); }
+    else if(gk.sideState===2){ ctx.fillStyle="#69f0ae"; ctx.font="bold 15px sans-serif"; ctx.fillText("⭕ ピントが合った！", W/2, 30); }
+    else if(gk.sideState===1){ ctx.fillStyle="#fff"; ctx.font="13px sans-serif"; ctx.fillText("限界まで近づけた→覗いて遠ざける", W/2, 30); }
+    else { ctx.fillStyle="#bbb"; ctx.font="13px sans-serif"; ctx.fillText("まず横から見て近づける", W/2, 30); }
+  }
+  // 学科S1のholdや達成は各操作関数で判定済み
+}
+function drawFieldPanel(ctx, cx, cy, r, label, ox, oy, scale, inverted, bright){
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7);
+  ctx.fillStyle = "rgba(230,245,255,"+(bright!=null?bright:0.95)+")"; ctx.fill();
+  ctx.lineWidth=3; ctx.strokeStyle="#90a4ae"; ctx.stroke();
+  ctx.clip();
+  // 中央の輪（目標）
+  ctx.beginPath(); ctx.arc(cx, cy, 14, 0, 7); ctx.strokeStyle="rgba(255,20,147,0.6)"; ctx.lineWidth=2; ctx.stroke();
+  // 対象（光る点＝生物）
+  const px = cx + ox*(r/100)*scale, py = cy + oy*(r/100)*scale;
+  ctx.beginPath(); ctx.arc(px, py, 8*Math.min(scale,2), 0, 7);
+  ctx.fillStyle="#33691e"; ctx.fill();
+  ctx.beginPath(); ctx.arc(px-2, py-2, 2, 0, 7); ctx.fillStyle="#d32f2f"; ctx.fill();
+  ctx.restore();
+  ctx.fillStyle="#fff"; ctx.font="bold 12px sans-serif"; ctx.textAlign="center";
+  ctx.fillText(label, cx, cy+r+16);
+}
+
+/* =========================================================
+   学科試験（パーツ名称）＋手順ならべかえ
+========================================================= */
+const PARTS_QUIZ = [
+  { q:"光っている部品の名前は？", a:"接眼レンズ", target:"p-eyepiece", opts:["接眼レンズ","対物レンズ","レボルバー","反射鏡"] },
+  { q:"光っている部品の名前は？", a:"対物レンズ", target:"p-objective", opts:["対物レンズ","接眼レンズ","しぼり","ステージ"] },
+  { q:"光っている部品（倍率をかえるとき回す）の名前は？", a:"レボルバー", target:"p-revolver", opts:["レボルバー","調節ねじ","ステージ","しぼり"] },
+  { q:"光っている部品（プレパラートをのせる）の名前は？", a:"ステージ", target:"p-stage", opts:["ステージ","反射鏡","レボルバー","接眼レンズ"] },
+  { q:"光っている部品（明るさを変える）の名前は？", a:"しぼり", target:"p-iris", opts:["しぼり","反射鏡","対物レンズ","調節ねじ"] },
+  { q:"光っている部品（光を反射させて視野を明るくする）の名前は？", a:"反射鏡", target:"p-mirror", opts:["反射鏡","しぼり","ステージ","レボルバー"] },
+  { q:"光っている部品（ピントを合わせる）の名前は？", a:"調節ねじ", target:"p-knob", opts:["調節ねじ","レボルバー","接眼レンズ","しぼり"] },
+  { q:"顕微鏡の倍率は『対物レンズ × ○○レンズ』で求める。○○は？", a:"接眼", target:null, opts:["接眼","反射","レボルバー","ステージ"] },
+  { q:"接眼レンズ10倍・対物レンズ40倍のときの倍率は？", a:"400倍", target:null, opts:["400倍","50倍","4倍","100倍"] },
+  { q:"接眼レンズ10倍で100倍にするには、対物レンズは何倍？", a:"10倍", target:null, opts:["10倍","100倍","90倍","1倍"] }
+];
+const ORDER_QUIZ = [
+  { title:"【観察の準備〜ピント】正しい順に、上からタップせよ", steps:[
+    "直射日光の当たらない明るく水平な台に置く",
+    "対物レンズを一番低い倍率にする",
+    "反射鏡を調節して視野全体を明るくする",
+    "プレパラートをステージにのせクリップでとめる",
+    "横から見ながら対物レンズとプレパラートを近づける",
+    "接眼レンズをのぞき、遠ざけながらピントを合わせる",
+    "しぼりを調節して観察物がはっきり見えるようにする" ] },
+  { title:"【高倍率にする】正しい順に、上からタップせよ", steps:[
+    "見たいものを視野の中央にする",
+    "レボルバーを回して高倍率の対物レンズにする",
+    "微動ねじでピントを合わせる",
+    "しぼりを調節し直して最もはっきり見えるようにする" ] },
+  { title:"【プレパラートのつくり方】正しい順に、上からタップせよ", steps:[
+    "スライドガラスに観察するものをのせる",
+    "スポイトで水を1滴落とす",
+    "カバーガラスを端（片側）から静かにかける（気泡が入らないように）",
+    "はみ出した水をろ紙で吸いとる" ] }
+];
+let pQi=0, pMistakes=0, pAnswered=false, oIdx=0, oPos=0;
+function startParts(){
+  pQi=0; pMistakes=0; oIdx=0; oPos=0;
+  showScreen('parts-screen');
+  document.getElementById('parts-result').classList.add('hidden');
+  const c=document.getElementById('parts-choices'); c.style.display="grid"; c.style.gridTemplateColumns="1fr 1fr";
+  mountMicro('parts-mount');
+  document.querySelectorAll('#parts-mount .plabel').forEach(e=>e.style.opacity=0);
+  nextParts();
+}
+function highlightPart(id){
+  const hl=document.querySelector('#parts-mount #hl'); if(!hl) return;
+  const pos={ 'p-eyepiece':[141,90,26],'p-objective':[142,208,30],'p-revolver':[140,178,36],
+    'p-stage':[130,240,42],'p-iris':[120,262,20],'p-mirror':[120,290,24],'p-knob':[205,205,24] }[id];
+  hl.innerHTML = pos ? `<circle class="hlring" cx="${pos[0]}" cy="${pos[1]}" r="${pos[2]}"/>` : "";
+}
+function nextParts(){
+  if(pQi >= PARTS_QUIZ.length){ startOrder(); return; }
+  const item = PARTS_QUIZ[pQi];
+  highlightPart(item.target);
+  document.getElementById('parts-qbox').innerText = `第${pQi+1}問 / ${PARTS_QUIZ.length}　${item.q}`;
+  const c=document.getElementById('parts-choices'); c.innerHTML=""; pAnswered=false;
+  [...item.opts].sort(()=>Math.random()-.5).forEach(o=>{
+    const b=document.createElement('button'); b.innerText=o;
+    b.onclick=()=>{
+      if(pAnswered) return; pAnswered=true;
+      if(o===item.a){ b.classList.add('right'); setTimeout(()=>{ pQi++; nextParts(); }, 600); }
+      else { b.classList.add('wrong'); pMistakes++;
+        [...c.children].forEach(x=>{ if(x.innerText===item.a) x.classList.add('right'); });
+        setTimeout(()=>{ pQi++; nextParts(); }, 1500); }
+    };
+    c.appendChild(b);
+  });
+}
+function startOrder(){
+  highlightPart(null);
+  document.querySelectorAll('#parts-mount .plabel').forEach(e=>e.style.opacity=1);
+  if(oIdx >= ORDER_QUIZ.length){ endParts(); return; }
+  const q=ORDER_QUIZ[oIdx]; oPos=0;
+  const marks=["①","②","③","④","⑤","⑥","⑦"];
+  document.getElementById('parts-qbox').innerText = `手順テスト ${oIdx+1} / ${ORDER_QUIZ.length}　${q.title}`;
+  const c=document.getElementById('parts-choices'); c.style.gridTemplateColumns="1fr"; c.innerHTML="";
+  q.steps.map((t,i)=>({t,i})).sort(()=>Math.random()-.5).forEach(item=>{
+    const b=document.createElement('button'); b.innerText=item.t;
+    b.onclick=()=>{
+      if(b.disabled) return;
+      if(item.i === oPos){ b.classList.add('right'); b.innerText=marks[oPos]+" "+item.t; b.disabled=true; oPos++;
+        if(oPos>=q.steps.length){ setTimeout(()=>{ oIdx++; startOrder(); }, 800); } }
+      else { pMistakes++; b.classList.add('wrong'); setTimeout(()=>b.classList.remove('wrong'), 500); }
+    };
+    c.appendChild(b);
+  });
+}
+function endParts(){
+  highlightPart(null);
+  document.querySelectorAll('#parts-mount .plabel').forEach(e=>e.style.opacity=1);
+  document.getElementById('parts-choices').style.display="none";
+  const r=document.getElementById('parts-result'); const t=document.getElementById('parts-result-text');
+  if(pMistakes===0){ stamp('gakkaShiken');
+    document.getElementById('parts-qbox').innerText="🎉 学科試験 合格！";
+    t.innerHTML="⭕ <span style='color:#2e7d32;'>全問正解！学科試験 合格！</span><br>🦅鷹目教官「名前も知らん道具は、握らせられんからな。」";
+  } else {
+    document.getElementById('parts-qbox').innerText="📝 採点結果";
+    t.innerHTML=`❌ <span style='color:#d32f2f;'>${pMistakes}問 まちがい。</span><br>全問正解で合格だ。もう一度！`;
+  }
+  r.classList.remove('hidden');
+}
+
+/* =========================================================
+   路上教習「観察室は事件だらけ」＋卒検の抜き打ち事件
+========================================================= */
+const INCIDENTS = [
+  { no:1, title:"ぼやけた世界", text:"覗いてもピントが合わず、真っ白でぼやけている！",
+    choices:[{t:"横から近づけ直し、覗いて遠ざけてピントを探す", ok:true},{t:"覗きながら粗動ねじで近づける", ok:false},{t:"倍率をもっと上げる", ok:false}],
+    expl:"ピントは①横から近づける→②覗いて遠ざける。覗きながら近づけるとレンズ激突。倍率を上げても解決しない。" },
+  { no:2, title:"真っ暗な視野", text:"倍率を上げたら、視野が真っ暗になってしまった！",
+    choices:[{t:"しぼりを開き、反射鏡で光を多く入れる", ok:true},{t:"部屋の電気を消す", ok:false},{t:"倍率をさらに上げる", ok:false}],
+    expl:"高倍率は視野が暗くなる。しぼりを開いて明るさを補う。低倍率で中央に置いてから上げるのも大切。" },
+  { no:3, title:"あやしい丸", text:"視野にくっきりした黒いふちの丸がたくさん。生物だろうか？",
+    choices:[{t:"プレパラートを動かして一緒に動くか確かめる（気泡を疑う）", ok:true},{t:"生物だと決めてスケッチする", ok:false},{t:"倍率を上げて数える", ok:false}],
+    expl:"くっきりした黒いふちの丸は『気泡』のことが多い。動かして確かめる。気泡だったら、気泡のない部分を観察するか、プレパラートをつくり直す。決めつけは観察の敵。" },
+  { no:4, title:"まぶしい光", text:"よく見えるように、窓の直射日光を反射鏡で取り込もうとしている。",
+    choices:[{t:"直射日光は使わず、明るい日かげの光を使う", ok:true},{t:"太陽をしっかり反射させて覗く", ok:false},{t:"我慢して覗き続ける", ok:false}],
+    expl:"反射鏡で直射日光を反射して覗くと、目を痛める危険。明るい日かげのやわらかい光を使う。" },
+  { no:5, title:"かわいていく標本", text:"観察に夢中のうちに、プレパラートの水分が乾いてきた！",
+    choices:[{t:"カバーガラスのふちに水を1滴くわえる", ok:true},{t:"そのまま乾くまで観察を続ける", ok:false},{t:"カバーガラスを外して息を吹きかける", ok:false}],
+    expl:"乾くと生物が観察できない。カバーガラスのふちにスポイトで水を足すと、すき間から水が入る。" },
+  { no:6, title:"はしっこの主役", text:"見たい生物が視野のすみに見える。もっと拡大したい。",
+    choices:[{t:"先に中央へ動かしてから倍率を上げる", ok:true},{t:"すみのまま倍率を上げる", ok:false},{t:"顕微鏡を傾ける", ok:false}],
+    expl:"視野のすみのまま倍率を上げると、拡大で視野外へ消え見失う。必ず中央に置いてから上げる。" },
+  { no:7, title:"くもったレンズ", text:"レンズがくもって見えにくい。ゆびであとがついている。",
+    choices:[{t:"専用のレンズ紙でそっとふく", ok:true},{t:"服のそででゴシゴシふく", ok:false},{t:"息を吹きかけて指でこする", ok:false}],
+    expl:"レンズは傷つきやすい。ティッシュや服はNG。専用のレンズ紙でそっと。指で触らない。" },
+  { no:8, title:"観察のあと", text:"観察が終わった。顕微鏡を片付ける。まず何をする？",
+    choices:[{t:"一番低い倍率に戻してからプレパラートを外す", ok:true},{t:"400倍のまま箱にしまう", ok:false},{t:"レンズをつけたまま逆さにする", ok:false}],
+    expl:"次に使う人の安全のため、低倍率に戻す。高倍率のまま外すとレンズを傷める。倒立像同様、片付けにも順序あり。" },
+  { no:9, title:"かたよる明るさ", text:"視野の片側だけ暗く、明るさにムラがある！",
+    choices:[{t:"反射鏡を動かして視野全体を均一に明るくする", ok:true},{t:"しぼりを閉じる", ok:false},{t:"倍率を上げる", ok:false}],
+    expl:"明るさのムラは反射鏡で光の向きを整えて均一にする。しぼりは『はっきり見える』ための明るさ調整で、反射鏡とは役割が違う。" }
+];
+let rojoIdx=0, rojoMistakes=0, jTimer=null, jAnswered=false;
+function startRojo(){ showScreen('rojo-screen'); rojoIdx=0; rojoMistakes=0; renderJikenbo(); showJiken(); }
+function renderJikenbo(){
+  const box=document.getElementById('jikenbo'); box.innerHTML="";
+  INCIDENTS.forEach((inc,i)=>{ const d=document.createElement('div'); d.className='jb'+(i<rojoIdx?' get':'');
+    d.innerHTML=`<span class="n">${i<rojoIdx?'📕':'❓'}</span>No.${inc.no}<br>${i<rojoIdx?inc.title:'？？？'}`; box.appendChild(d); });
+}
+function showJiken(){
+  if(rojoIdx >= INCIDENTS.length){ endRojo(); return; }
+  const inc=INCIDENTS[rojoIdx]; jAnswered=false;
+  document.getElementById('jiken-flash').classList.remove('hidden');
+  document.getElementById('jiken-kaisetsu').classList.add('hidden');
+  document.getElementById('jiken-next').classList.add('hidden');
+  document.getElementById('jiken-text').innerText = `事件No.${inc.no}　${inc.text}`;
+  const box=document.getElementById('jiken-choices'); box.innerHTML="";
+  [...inc.choices].sort(()=>Math.random()-.5).forEach(ch=>{ const b=document.createElement('button'); b.innerText=ch.t; b.onclick=()=>answerJiken(b,ch,inc); box.appendChild(b); });
+  const t=document.getElementById('jiken-timer'); t.classList.remove('hidden'); t.classList.remove('run'); void t.offsetWidth;
+  t.querySelector('i').style.animationDuration="5s"; t.classList.add('run');
+  clearTimeout(jTimer); jTimer=setTimeout(()=>{ if(!jAnswered) answerJiken(null,{ok:false,t:"（時間切れ）"},inc); }, 5000);
+}
+function answerJiken(btn, ch, inc){
+  if(jAnswered) return; jAnswered=true; clearTimeout(jTimer);
+  document.getElementById('jiken-timer').classList.remove('run');
+  const box=document.getElementById('jiken-choices');
+  [...box.children].forEach(b=>{ if(inc.choices.find(c=>c.t===b.innerText)?.ok) b.classList.add('right'); b.disabled=true; });
+  const k=document.getElementById('jiken-kaisetsu'); k.classList.remove('hidden');
+  if(ch.ok){
+    k.innerHTML="⭕ <strong>正解！</strong>　"+inc.expl+"<br>"+kyokanSay(KYOKAN.inc_ok);
+    document.getElementById('jiken-next').classList.remove('hidden');
+    document.getElementById('jiken-next').innerText = (rojoIdx>=INCIDENTS.length-1)?"🎓 路上教習を修了する ▶":"つぎの事件へ ▶";
+  } else {
+    if(btn) btn.classList.add('wrong'); rojoMistakes++;
+    k.innerHTML="❌ <strong>"+(ch.t==="（時間切れ）"?"時間切れ！":"その行動は危険！")+"</strong>　"+inc.expl+"<br>🦅鷹目教官「もう一度だ。今度は3秒で見抜け。」";
+    document.getElementById('jiken-next').classList.remove('hidden');
+    document.getElementById('jiken-next').innerText="同じ事件にもう一度挑む ▶";
+    rojoIdx--;
+  }
+}
+function nextJiken(){ rojoIdx++; renderJikenbo(); showJiken(); }
+function endRojo(){
+  stamp('rojo');
+  document.getElementById('jiken-flash').classList.add('hidden');
+  document.getElementById('jiken-timer').classList.add('hidden');
+  document.getElementById('jiken-text').innerText=`🎉 全${INCIDENTS.length}事件、解決！`;
+  document.getElementById('jiken-choices').innerHTML="";
+  document.getElementById('jiken-kaisetsu').classList.add('hidden');
+  document.getElementById('jiken-next').classList.add('hidden');
+  document.getElementById('rojo-quit').classList.add('hidden');
+  renderJikenbo();
+  const r=document.getElementById('rojo-result'); r.classList.remove('hidden');
+  document.getElementById('rojo-result-text').innerHTML =
+    (rojoMistakes===0?"⭕ ノーミスで路上教習 修了！":`路上教習 修了！（やり直し ${rojoMistakes}回）`)+
+    "<br>🦅鷹目教官「観察室の事件は、必ず君の授業中にも起こる。今日の判断を体に刻め。」";
+}
+
+/* 卒検の抜き打ち事件 */
+function scheduleIncident(){
+  incidentDone=false;
+  const fire=()=>{
+    if(isGameOver || incidentDone) return;
+    if(currentStep < 2){ incidentTimer=setTimeout(fire, 2000); return; } // 覗く段階以降で発火
+    fireIncident();
+  };
+  incidentTimer=setTimeout(fire, 4000 + Math.random()*5000);
+}
+function fireIncident(){
+  if(isGameOver || incidentDone || document.getElementById('simulator-screen').classList.contains('hidden')) return;
+  incidentDone=true; pauseTimer();
+  const inc=INCIDENTS[Math.floor(Math.random()*INCIDENTS.length)];
+  const ov=document.getElementById('incident-ov'); ov.classList.add('on');
+  document.getElementById('inc-text').innerText=`事件No.${inc.no}「${inc.title}」　${inc.text}`;
+  const box=document.getElementById('inc-choices'); box.innerHTML="";
+  let answered=false;
+  const t=document.getElementById('inc-timer'); t.classList.remove('run'); void t.offsetWidth;
+  t.querySelector('i').style.animationDuration="5s"; t.classList.add('run');
+  const to=setTimeout(()=>{ if(!answered) finish(false,null); }, 5000);
+  const finish=(ok,btn)=>{
+    if(answered) return; answered=true; clearTimeout(to);
+    [...box.children].forEach(b=>{ if(inc.choices.find(c=>c.t===b.innerText)?.ok) b.classList.add('right'); b.disabled=true; });
+    if(btn && !ok) btn.classList.add('wrong');
+    setTimeout(()=>{
+      ov.classList.remove('on');
+      if(ok){ msgBoard("⭕事件対応 成功！検定続行。\n"+kyokanSay(KYOKAN.inc_ok)); boardClass('success'); startTimer(); setTimeout(updateGameState, 2500); }
+      else { gameOver("❌【検定中止】事件への対応を誤った！　正解：「"+inc.choices.find(c=>c.ok).t+"」。"+inc.expl); }
+    }, ok?700:1600);
+  };
+  [...inc.choices].sort(()=>Math.random()-.5).forEach(ch=>{ const b=document.createElement('button'); b.innerText=ch.t; b.onclick=()=>finish(ch.ok,b); box.appendChild(b); });
+}
+
+/* ---------- 起動 ---------- */
+decorateMenu();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+_history/
+*.docx
+*.pdf
+顕微鏡教習所.html
+光学顕微鏡_授業デザインフロー.html
