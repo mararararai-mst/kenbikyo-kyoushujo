@@ -193,6 +193,9 @@
     .btn-box { gap: 4px; }
     input[type="range"] { height: 20px; }
   }
+  .guide-now{ outline:3px solid #ffca28 !important; outline-offset:2px; animation:guidePulse 1s infinite; position:relative; }
+  @keyframes guidePulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,202,40,.7);} 50%{ box-shadow:0 0 0 7px rgba(255,202,40,0);} }
+  .op-btn.current-view:disabled{ opacity:1; background:#37474f !important; color:#fff !important; }
 </style>
 </head>
 <body>
@@ -396,12 +399,24 @@
             <div style="flex: 1.2;">
               <strong style="font-size:12px;">ねじ（ピント合わせ）:</strong>
               <div class="btn-box" style="margin-bottom:5px;">
-                <button class="op-btn danger" onclick="moveFocus(-5, 1)">粗動 近</button>
-                <button class="op-btn action" onclick="moveFocus(5, 1)">粗動 遠</button>
+                <button class="op-btn danger" id="btn-co-near" onclick="moveFocus(-5, 1)">粗動 近</button>
+                <button class="op-btn action" id="btn-co-far" onclick="moveFocus(5, 1)">粗動 遠</button>
               </div>
               <div class="btn-box">
-                <button class="op-btn danger" onclick="moveFocus(-1, 0)">微動 近</button>
-                <button class="op-btn action" onclick="moveFocus(1, 0)">微動 遠</button>
+                <button class="op-btn danger" id="btn-fi-near" onclick="moveFocus(-1, 0)">微動 近</button>
+                <button class="op-btn action" id="btn-fi-far" onclick="moveFocus(1, 0)">微動 遠</button>
+              </div>
+              <div id="gap-meter-box" style="margin-top:8px; font-size:11px; color:#555;">
+                <div style="display:flex; justify-content:space-between;">
+                  <strong>レンズとプレパラートのすき間</strong><span id="gap-val"></span>
+                </div>
+                <div style="position:relative; height:14px; background:#e8edf2; border-radius:7px; margin-top:3px; overflow:hidden;">
+                  <div id="gap-fill" style="position:absolute; left:0; top:0; bottom:0; width:100%; background:linear-gradient(90deg,#ef5350,#ffb74d 30%,#64b5f6); border-radius:7px; transition:width .15s;"></div>
+                  <div id="gap-pin-focus" title="ピントが合う位置" style="position:absolute; top:-1px; bottom:-1px; width:3px; background:#2e7d32;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:2px;">
+                  <span style="color:#c62828;">← ぶつかる</span><span style="color:#2e7d32;">▮=ピント</span><span>遠い →</span>
+                </div>
               </div>
             </div>
             <div style="flex: 1; text-align:center; border-left: 1px solid #ccc; padding-left: 5px;">
@@ -805,6 +820,7 @@ function updateGameState(){
         btn40x.innerText = btn40x.disabled?"🔒 400倍に切り替える":"🔍 400倍(対物40x)に切り替える"; btn40x.className = btn40x.disabled?"op-btn":"op-btn danger highlight"; }
       else if(currentStep >= 4){ btn40x.classList.add('hidden'); }
     }
+    updateGuide();
     return;
   }
 
@@ -855,8 +871,44 @@ function updateGameState(){
       else { msgBoard("⚠️【注意】ピントは合っていますが対象が視野から外れています！矢印で慎重に探せ！"); boardClass('warning'); }
     } else { msgBoard("⚠️【STEP 4】400倍は激シビア！微動ねじだけで慎重にピントを探れ！"); boardClass('alert'); }
   }
+  updateGuide();
 }
 
+function updateGuide(){
+  /* 今押すべきボタンを1つだけ光らせる（卒業検定はノーヒントなので消す） */
+  document.querySelectorAll('.guide-now').forEach(e=>e.classList.remove('guide-now'));
+  const bs=document.getElementById('btn-side'), be=document.getElementById('btn-eye');
+  const isEyeView = document.getElementById('eye-view').style.display === 'flex';
+  /* いまどっちを見ているかを表示（押せない方＝今のモード） */
+  bs.classList.toggle('current-view', bs.disabled);
+  be.classList.toggle('current-view', be.disabled);
+  bs.innerText = bs.disabled ? '✔ いま横から見ている' : '横から見る';
+  be.innerText = be.disabled && isEyeView ? '✔ いまレンズを覗いている' : 'レンズを覗く';
+  /* すき間メーター（卒検では隠す） */
+  const box=document.getElementById('gap-meter-box');
+  if(box){
+    if(currentMode===4){ box.style.display='none'; }
+    else{
+      box.style.display='';
+      document.getElementById('gap-fill').style.width = (distance/50*100)+'%';
+      document.getElementById('gap-pin-focus').style.left = 'calc('+(targetDistance/50*100)+'% - 1px)';
+      document.getElementById('gap-val').innerText = distance<=5 ? distance+'（極限！）' : String(distance);
+    }
+  }
+  if(isGameOver || currentMode===4) return;
+  const focusDist = distance - targetDistance;
+  let target=null;
+  if(currentStep===0){
+    target = (typeof isSlideSet!=='undefined' && !isSlideSet) ? 'btn-set-slide' : 'btn-lens-ok';
+  } else if(currentStep===1){
+    target = (distance>5) ? 'btn-co-near' : 'btn-eye';
+  } else if(currentStep>=2 && isEyeView){
+    if(Math.abs(focusDist)>((currentStep>=3)?0:1)){
+      target = (focusDist<0) ? 'btn-fi-far' : 'btn-fi-near';
+    }
+  }
+  if(target){ const el=document.getElementById(target); if(el && !el.disabled) el.classList.add('guide-now'); }
+}
 function updateVisuals(){
   let scale = 1;
   if(currentStep === 3) scale = 2.5;
