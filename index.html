@@ -1069,7 +1069,17 @@ function gakkaSide(a){
 function gakkaTick(){
   if(!gk) return;
   const c = document.getElementById('gakka-canvas'); if(!c) return;
-  const ctx = c.getContext('2d'); const W=c.width, H=c.height;
+  const ctx = c.getContext('2d');
+  /* 高DPI対応: バッファのみ拡大し、描画座標は論理px(340x260)のまま */
+  if(!c.dataset.dpr){
+    const d=Math.min(window.devicePixelRatio||1,2);
+    c.style.width=c.width+'px'; c.style.maxWidth='100%';
+    c.width=Math.round(c.width*d); c.height=Math.round(c.height*d);
+    c.dataset.dpr=d;
+  }
+  const DPR=+c.dataset.dpr;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  const W=c.width/DPR, H=c.height/DPR;
   ctx.clearRect(0,0,W,H);
   const st = (gk.phase==='free') ? 'free' : gk.step;
 
