@@ -43,6 +43,71 @@
   #btn-sotsu { background: linear-gradient(135deg,#b8860b,#daa520); }
   #btn-tutorial { background: #4caf50; }
   #btn-mode3 { background: #555555; }
+  #btn-p3 { background: #00796b; }
+
+  /* ---- 学科教習「3Dで部品と手順」 ---- */
+  #p3-head{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;margin:0 0 8px;}
+  #p3-head h2{margin:0;font-size:18px;color:#00796b;white-space:nowrap;}
+  #p3-tabs{display:flex;gap:6px;flex:1;min-width:250px;}
+  #p3-tabs button{flex:1;padding:8px 6px;white-space:nowrap;border:none;border-radius:8px;font-family:inherit;font-weight:bold;font-size:15px;background:#e0f2f1;color:#00695c;cursor:pointer;}
+  #p3-tabs button.on{background:#00796b;color:#fff;}
+  #p3-stage{position:relative;width:100%;height:clamp(260px,calc(100vh - 380px),430px);border-radius:10px;overflow:hidden;border:2px solid #cfd8dc;background:#eaf3fb;touch-action:none;}
+  #p3-gl{width:100%;height:100%;display:block;touch-action:none;}
+  #p3-eye{position:absolute;right:8px;top:8px;width:118px;height:118px;border-radius:50%;background:#111;
+    box-shadow:0 0 0 5px #263238,0 4px 10px rgba(0,0,0,.3);transition:all .45s;pointer-events:none;z-index:3;}
+  #p3-eye.big{width:min(250px,62vw);height:min(250px,62vw);right:calc(50% - min(125px,31vw));top:calc(50% - min(125px,31vw));}
+  #p3-eyecap{position:absolute;right:8px;top:132px;font-size:11px;font-weight:bold;background:rgba(255,255,255,.92);padding:1px 8px;border-radius:9px;z-index:3;pointer-events:none;}
+  #p3-labels{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+  .p3-lbl{position:absolute;left:0;top:0;font-size:11.5px;font-weight:bold;background:rgba(255,255,255,.95);color:#37474f;padding:2px 7px;border-radius:9px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.22);}
+  .p3-lbl.sel{background:#ef6c00;color:#fff;font-size:13px;}
+  #p3-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#546e7a;padding:20px;text-align:center;}
+  .p3-rot{position:absolute;left:8px;bottom:8px;display:flex;gap:5px;z-index:3;}
+  .p3-rot button{border:none;border-radius:8px;background:rgba(255,255,255,.92);font-family:inherit;font-weight:bold;font-size:13px;padding:6px 10px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  #p3-now{min-height:22px;font-size:14px;font-weight:bold;color:#00695c;margin:8px 2px;line-height:1.5;word-break:auto-phrase;}
+  #p3-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+  #p3-chips button{border:none;border-radius:16px;padding:7px 12px;background:#eceff1;color:#37474f;font-family:inherit;font-weight:bold;font-size:13.5px;cursor:pointer;}
+  #p3-chips button.on{background:#ef6c00;color:#fff;}
+  #p3-card{background:#f7fbff;border:2px solid #b3d4f5;border-radius:10px;padding:10px 14px;min-height:64px;margin-bottom:10px;}
+  #p3-card .p3-name{font-size:18px;font-weight:bold;color:#ef6c00;}
+  #p3-card .p3-desc{font-size:14.5px;line-height:1.7;word-break:auto-phrase;}
+  #p3-card .p3-hint{color:#607d8b;font-size:14px;}
+  #p3-card .p3-gos{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;}
+  #p3-card .p3-go{border:none;border-radius:8px;background:#00796b;color:#fff;font-family:inherit;font-weight:bold;font-size:13px;padding:6px 10px;cursor:pointer;}
+  #p3-dots{display:flex;gap:6px;justify-content:center;margin:6px 0;}
+  #p3-dots span{width:30px;height:30px;border-radius:50%;background:#eceff1;color:#90a4ae;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+  #p3-dots span.done{background:#b2dfdb;color:#00695c;} #p3-dots span.on{background:#00796b;color:#fff;}
+  .p3-stepbox{display:flex;gap:10px;align-items:flex-start;background:#f7fbff;border:2px solid #b3d4f5;border-radius:10px;padding:10px 12px;}
+  #p3-stepno{flex:none;font-size:26px;font-weight:bold;color:#00796b;line-height:1;}
+  #p3-steptext{font-size:15px;line-height:1.75;word-break:auto-phrase;}
+  #p3-stepwarn{margin-top:6px;color:#d32f2f;font-size:13.5px;font-weight:bold;word-break:auto-phrase;}
+  .p3-stepbtns{display:flex;gap:6px;margin:10px 0;}
+  .p3-stepbtns button{flex:1;padding:12px 6px;border:none;border-radius:8px;font-family:inherit;font-weight:bold;font-size:15px;cursor:pointer;background:#eceff1;color:#37474f;}
+  .p3-stepbtns button#p3-next{background:#00796b;color:#fff;}
+  .p3-stepbtns button:disabled{opacity:.4;}
+  .p3-note{font-size:12.5px;color:#d32f2f;font-weight:bold;margin:2px 0 8px;}
+  .p3-layout{display:flex;flex-direction:column;}
+  .p3-left,.p3-right{min-width:0;}
+  .p3-right{display:flex;flex-direction:column;}
+  .p3-foot{display:flex;gap:6px;margin-top:auto;padding-top:6px;}
+  .p3-foot .menu-btn{flex:1;margin:0;padding:10px 8px;font-size:14px;text-align:center;white-space:nowrap;}
+  .p3-stepbtns button{white-space:nowrap;}
+  /* 横長の画面：3Dを左、説明と操作を右（技能教習の画面と同じ並び）。スクロールなしで全部見える */
+  @media (min-width:768px) and (orientation:landscape){
+    .p3-layout{flex-direction:row;align-items:flex-start;gap:14px;}
+    .p3-left{flex:1.5;}
+    .p3-right{flex:1;min-width:290px;max-width:380px;height:clamp(360px,calc(100vh - 240px),640px);overflow-y:auto;}
+    #p3-stage{height:clamp(360px,calc(100vh - 240px),640px);}
+    #p3-now{margin-top:0;}
+  }
+  @media (orientation:landscape) and (max-height:500px){
+    .p3-right,#p3-stage{height:max(220px,calc(100vh - 160px));}
+  }
+  /* 比較用：3Dの窓だけを出す（?embed=1） */
+  body.p3-embed{padding:0;background:#eaf3fb;}
+  body.p3-embed #app-container{max-width:none!important;padding:0!important;border:0;border-radius:0;box-shadow:none;}
+  body.p3-embed h1,body.p3-embed #p3-head,body.p3-embed .p3-right,body.p3-embed .version-footer{display:none!important;}
+  body.p3-embed,body.p3-embed #app-container{overflow:hidden;}
+  body.p3-embed #p3-stage{height:100vh!important;border:0;border-radius:0;}
   .hidden { display: none !important; opacity: 0; pointer-events: none; }
 
   #timer-board { font-size: 22px; color: #d32f2f; font-weight: bold; margin-bottom: 10px; background: #ffebee; padding: 8px; border-radius: 8px; border: 2px solid #ef5350; text-align: center;}
@@ -209,6 +274,7 @@
     <button class="menu-btn" id="btn-tutorial" onclick="showScreen('tutorial-screen')">🔰 入所ガイダンス（絶対ルール）</button>
     <div class="stage-label">第1段階（学科）</div>
     <button class="menu-btn" id="btn-gakka" onclick="startGakka()">📖 学科教習「見え方のしくみ」（倒立像・倍率）</button>
+    <button class="menu-btn" id="btn-p3" onclick="startParts3d()">🧩 学科教習「3Dで部品と手順」（名前・使い方①〜⑥）</button>
     <button class="menu-btn" id="btn-parts" onclick="startParts()">📝 学科試験（各部の名前＋手順ならべかえ）</button>
     <div class="stage-label">第2段階（技能）</div>
     <button class="menu-btn" id="btn-mode1" onclick="startMode(1)">🔬 技能教習Ⅰ タマネギの表皮 / 100倍</button>
@@ -264,6 +330,36 @@
     <div id="gakka-controls"></div>
     <button class="menu-btn hidden" id="gakka-next" style="background:#00897b;" onclick="gakkaNext()">つぎへ ▶</button>
     <button class="menu-btn" style="background:#555;" onclick="location.reload()">トップに戻る</button>
+  </div>
+
+  <!-- 学科教習（3D）：部品と使い方①〜⑥（parts3d.js） -->
+  <div id="p3-screen" class="hidden">
+    <div id="p3-head"><h2>🧩 学科教習「3Dで部品と手順」</h2>
+    <div id="p3-tabs"><button class="on" data-t="parts">部品を調べる</button><button data-t="steps">使い方 ①〜⑥</button></div></div>
+    <div class="p3-layout"><div class="p3-left">
+    <div id="p3-stage">
+      <canvas id="p3-gl"></canvas>
+      <div id="p3-labels"></div>
+      <canvas id="p3-eye" width="250" height="250"></canvas>
+      <div id="p3-eyecap">接眼レンズの中</div>
+      <div class="p3-rot"><button id="p3-rotL">↺</button><button id="p3-rotR">↻</button><button id="p3-rotH">もとの向き</button></div>
+      <div id="p3-loading">3Dの顕微鏡を読みこみ中…</div>
+    </div>
+    </div><div class="p3-right">
+    <div id="p3-now"></div>
+    <div id="p3-parts">
+      <div id="p3-chips"></div>
+      <div id="p3-card"></div>
+    </div>
+    <div id="p3-steps" class="hidden">
+      <div class="p3-note">注意：直射日光の当たらない明るいところで使う。</div>
+      <div id="p3-dots"><span>①</span><span>②</span><span>③</span><span>④</span><span>⑤</span><span>⑥</span></div>
+      <div class="p3-stepbox"><div id="p3-stepno">①</div><div><div id="p3-steptext"></div><div id="p3-stepwarn"></div></div></div>
+      <div class="p3-stepbtns"><button id="p3-prev">◀ まえ</button><button id="p3-play">▶ もう一度</button><button id="p3-next">つぎへ ▶</button></div>
+      <div id="p3-finish" class="hidden kyokan">🦅鷹目教官「部品と手順は頭に入ったな。次は学科試験だ。」</div>
+    </div>
+    <div class="p3-foot"><button class="menu-btn" style="background:#9c27b0;" onclick="startParts()">📝 学科試験へ進む</button><button class="menu-btn" style="background:#555;" onclick="location.reload()">トップに戻る</button></div>
+    </div></div>
   </div>
 
   <!-- 学科試験 -->
@@ -470,7 +566,7 @@ function resetProgress(){
   if(confirm("教習記録（修了スタンプ）をすべて消します。よろしいですか？")){ localStorage.removeItem(PKEY); location.reload(); }
 }
 function decorateMenu(){
-  const map = { gakka:"btn-gakka", gakkaShiken:"btn-parts", ginou1:"btn-mode1", ginou2:"btn-mode2", rojo:"btn-rojo", sotsu:"btn-sotsu" };
+  const map = { gakka:"btn-gakka", gakka3d:"btn-p3", gakkaShiken:"btn-parts", ginou1:"btn-mode1", ginou2:"btn-mode2", rojo:"btn-rojo", sotsu:"btn-sotsu" };
   for(const k in map){
     if(P[k]){
       const b = document.getElementById(map[k]);
@@ -494,75 +590,46 @@ function kyokanSay(pool){ return "🦅鷹目教官「" + pool[Math.floor(Math.ra
    顕微鏡SVG（学科試験のパーツ発光クイズ用）
 ========================================================= */
 function microSVG(){
+  // 3Dの学科教習（parts3d.js）の顕微鏡を真横から見た絵（ステージ上下式）。色は教科書 p.88 の写真と3Dにそろえる（2026-09-28 比較で決定）
   return `
 <svg class="micro" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="mtl" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#b0bec5"/><stop offset="45%" stop-color="#eceff1"/><stop offset="100%" stop-color="#90a4ae"/>
-    </linearGradient>
-  </defs>
-  <!-- 台 -->
-  <path d="M60 315 Q60 300 80 300 L150 300 L150 315 Z" fill="#78909c"/>
-  <ellipse cx="120" cy="316" rx="72" ry="12" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
-  <!-- アーム -->
-  <path d="M150 305 Q205 300 205 250 L205 120 Q205 95 180 92" fill="none" stroke="url(#mtl)" stroke-width="16" stroke-linecap="round"/>
-  <!-- 反射鏡 -->
-  <g id="p-mirror">
-    <ellipse cx="120" cy="292" rx="20" ry="9" fill="#cfd8dc" stroke="#546e7a" stroke-width="2" transform="rotate(-18 120 292)"/>
-    <line x1="120" y1="300" x2="120" y2="285" stroke="#546e7a" stroke-width="3"/>
-  </g>
-  <!-- しぼり -->
-  <g id="p-iris">
-    <ellipse cx="120" cy="262" rx="22" ry="7" fill="#90a4ae" stroke="#546e7a" stroke-width="2"/>
-    <circle cx="120" cy="262" r="6" fill="#37474f"/>
-  </g>
-  <!-- ステージ -->
-  <g id="p-stage">
-    <rect x="78" y="234" width="104" height="12" rx="3" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
-    <rect x="112" y="230" width="16" height="6" fill="#37474f"/>
-    <rect x="96" y="228" width="22" height="5" rx="2" fill="#ff8a65"/>
-    <rect x="106" y="238" width="10" height="4" fill="#455a64"/>
-  </g>
-  <!-- レボルバー -->
-  <g id="p-revolver">
-    <ellipse cx="140" cy="182" rx="30" ry="12" fill="#607d8b" stroke="#37474f" stroke-width="2"/>
-    <ellipse cx="140" cy="177" rx="30" ry="12" fill="#78909c" stroke="#37474f" stroke-width="2"/>
-  </g>
-  <!-- 対物レンズ -->
-  <g id="p-objective">
-    <rect x="118" y="188" width="12" height="26" rx="3" fill="#455a64"/>
-    <rect x="136" y="188" width="12" height="34" rx="3" fill="#ffca28"/>
-    <rect x="154" y="188" width="12" height="42" rx="3" fill="#e53935"/>
-  </g>
-  <!-- 鏡筒 -->
-  <rect x="128" y="110" width="26" height="70" rx="6" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
-  <!-- 接眼レンズ -->
-  <g id="p-eyepiece">
-    <rect x="130" y="70" width="22" height="44" rx="5" fill="url(#mtl)" stroke="#607d8b" stroke-width="2"/>
-    <ellipse cx="141" cy="70" rx="11" ry="4" fill="#455a64"/>
-  </g>
-  <!-- 調節ねじ -->
-  <g id="p-knob">
-    <circle cx="205" cy="205" r="17" fill="#546e7a" stroke="#37474f" stroke-width="2"/>
-    <circle cx="205" cy="205" r="9" fill="#78909c"/>
-  </g>
-  <!-- ラベル -->
-  <text x="200" y="60" text-anchor="start" class="plabel-txt plabel">接眼レンズ</text>
-  <line class="plabel" x1="152" y1="80" x2="198" y2="58" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="196" y="150" text-anchor="start" class="plabel-txt plabel">鏡筒</text>
-  <line class="plabel" x1="154" y1="145" x2="194" y2="148" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="18" y="180" text-anchor="start" class="plabel-txt plabel">レボルバー</text>
-  <line class="plabel" x1="66" y1="180" x2="112" y2="180" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="18" y="210" text-anchor="start" class="plabel-txt plabel">対物レンズ</text>
-  <line class="plabel" x1="66" y1="208" x2="118" y2="205" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="18" y="240" text-anchor="start" class="plabel-txt plabel">ステージ</text>
-  <line class="plabel" x1="60" y1="238" x2="78" y2="240" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="18" y="266" text-anchor="start" class="plabel-txt plabel">しぼり</text>
-  <line class="plabel" x1="50" y1="264" x2="98" y2="262" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="18" y="296" text-anchor="start" class="plabel-txt plabel">反射鏡</text>
-  <line class="plabel" x1="50" y1="294" x2="100" y2="292" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
-  <text x="232" y="208" text-anchor="start" class="plabel-txt plabel">調節ねじ</text>
-  <line class="plabel" x1="222" y1="205" x2="230" y2="206" stroke="#607d8b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <g id="p-base"><rect x="67" y="293" width="171" height="27" rx="5" fill="#e6dcc6"/><rect x="67" y="293" width="171" height="5" rx="2.5" fill="#f4efe2"/><rect x="67" y="313.7" width="171" height="6.3" rx="3" fill="#cdbf9f"/></g>
+  <g id="p-arm"><polygon points="215.5,297.5 176.8,297.5 176.8,171.5 167.8,152.6 153.4,145.4 153.4,129.2 185.8,129.2 209.2,143.6 215.5,162.5" fill="#e6dcc6"/><rect x="206.5" y="164.3" width="9" height="131.4" fill="#cdbf9f"/><rect x="176.8" y="172.4" width="6.3" height="123.3" fill="#f4efe2"/>
+  <rect x="117.4" y="125.6" width="54" height="30.6" rx="3" fill="#e6dcc6"/><rect x="117.4" y="125.6" width="54" height="4" rx="2" fill="#f4efe2"/></g>
+  <g id="p-tube"><rect x="117.8" y="69.8" width="24.3" height="59.6" fill="#e6dcc6"/><rect x="121.9" y="69.8" width="6" height="57.6" fill="#f4efe2"/><rect x="136.8" y="69.8" width="5.4" height="57.6" fill="#cdbf9f"/></g>
+  <g id="p-eyepiece"><rect x="119.2" y="46.4" width="21.6" height="23.4" fill="#d4d8dd"/><rect x="122.8" y="46.4" width="5" height="23.4" fill="#eef1f4"/><rect x="136.3" y="46.4" width="4.5" height="23.4" fill="#aab2ba"/><rect x="118.5" y="41.4" width="23" height="6.3" rx="1.5" fill="#2a2d31"/></g>
+  <g id="p-objective"><polygon points="143.5,158.6 153.1,175.0 162.8,169.3 153.2,152.9" fill="#d4d8dd"/><polygon points="144.8,157.8 154.5,174.2 157.2,172.6 147.5,156.2" fill="#eef1f4"/><polygon points="150.3,154.6 159.9,171.0 162.8,169.3 153.2,152.9" fill="#aab2ba"/><polygon points="153.0,175.1 154.2,177.2 164.2,171.3 163.0,169.2" fill="#29a8e0"/><polygon points="156.0,177.7 163.2,187.1 168.5,184.0 163.8,173.1" fill="#d4d8dd"/><polygon points="157.5,176.9 164.2,186.6 165.6,185.6 159.4,175.7" fill="#eef1f4"/><polygon points="143.5,158.6 149.0,168.0 158.7,162.3 153.2,152.9" fill="#d4d8dd"/><polygon points="144.8,157.8 150.3,167.2 153.0,165.6 147.5,156.2" fill="#eef1f4"/><polygon points="150.3,154.6 155.8,164.0 158.7,162.3 153.2,152.9" fill="#aab2ba"/><polygon points="148.8,168.1 149.5,169.3 159.6,163.4 158.9,162.2" fill="#e53935"/><polygon points="151.1,169.3 155.7,174.4 161.0,171.3 158.8,164.7" fill="#d4d8dd"/><polygon points="152.6,168.5 156.7,173.9 158.1,172.9 154.4,167.2" fill="#eef1f4"/><polygon points="124.4,162.5 124.4,178.3 135.6,178.3 135.6,162.5" fill="#d4d8dd"/><polygon points="125.9,162.5 125.9,178.3 129.0,178.3 129.0,162.5" fill="#eef1f4"/><polygon points="132.2,162.5 132.2,178.3 135.6,178.3 135.6,162.5" fill="#aab2ba"/><polygon points="124.2,178.3 124.2,180.4 135.8,180.4 135.8,178.3" fill="#f2c200"/><polygon points="125.5,181.5 126.9,191.3 133.1,191.3 134.5,181.5" fill="#d4d8dd"/><polygon points="127.2,181.6 128.0,191.3 129.7,191.3 129.4,181.4" fill="#eef1f4"/></g>
+  <g id="p-revolver"><polygon points="121.0,142.2 163.3,157.5 160.4,165.4 118.1,150.1" fill="#aab2ba"/><polygon points="121.0,142.2 163.3,157.5 162.3,160.2 120.0,144.9" fill="#d4d8dd"/></g>
+  <g id="p-iris"><rect x="121.5" y="208.9" width="48.6" height="4.6" rx="2" fill="#17181b"/><rect x="121.5" y="208.9" width="48.6" height="1.6" rx=".8" fill="#4f555c"/><rect x="143.5" y="205.7" width="4.5" height="4" fill="#aab2ba"/></g>
+  <g id="p-stage"><rect x="175.9" y="201.2" width="14.4" height="23.4" fill="#2a2d31"/><rect x="87.7" y="198.5" width="99" height="7.2" rx="1.5" fill="#2a2d31"/><rect x="87.7" y="198.5" width="99" height="2" rx="1" fill="#474b52"/>
+  <rect x="118.3" y="196.5" width="23.4" height="2" fill="#cfe8f0"/></g>
+  <g id="p-clip"><rect x="120.1" y="194.9" width="39.6" height="2" rx="1" fill="#aab2ba"/><rect x="156.3" y="193.6" width="5" height="5" rx="1" fill="#848d96"/></g>
+  <g id="p-knob"><circle cx="195.7" cy="235.4" r="16.2" fill="#17181b"/><circle cx="195.7" cy="235.4" r="13" fill="#2a2d31"/><circle cx="195.7" cy="235.4" r="5.4" fill="#aab2ba"/><circle cx="194.1" cy="233.8" r="2" fill="#eef1f4"/></g>
+  <g id="p-mirror"><rect x="123.7" y="283.1" width="5.4" height="14.4" fill="#aab2ba"/><rect x="124.2" y="271.9" width="4.5" height="11.7" fill="#848d96"/>
+  <polygon points="107.5,291.8 149.7,265.8 145.3,258.6 103.1,284.6" fill="#848d96"/><polygon points="108.1,287.5 150.2,261.5 147.9,257.7 105.8,283.7" fill="#e8f1f6"/></g>
+  <!-- ラベル（クイズ中は隠す） -->
+  <text x="6" y="54.5" text-anchor="start" class="plabel-txt plabel">接眼レンズ</text>
+  <line class="plabel" x1="64.0" y1="51.0" x2="119.2" y2="54.5" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="98.6" text-anchor="start" class="plabel-txt plabel">鏡筒</text>
+  <line class="plabel" x1="31.0" y1="95.1" x2="117.8" y2="98.6" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="149.9" text-anchor="start" class="plabel-txt plabel">レボルバー</text>
+  <line class="plabel" x1="64.0" y1="146.4" x2="121.9" y2="149.9" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="177.8" text-anchor="start" class="plabel-txt plabel">対物レンズ</text>
+  <line class="plabel" x1="64.0" y1="174.3" x2="124.6" y2="177.8" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="201.2" text-anchor="start" class="plabel-txt plabel">ステージ</text>
+  <line class="plabel" x1="53.0" y1="197.7" x2="89.5" y2="201.2" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="216.2" text-anchor="start" class="plabel-txt plabel">しぼり</text>
+  <line class="plabel" x1="42.0" y1="212.7" x2="121.9" y2="210.2" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="286.2" text-anchor="start" class="plabel-txt plabel">反射鏡</text>
+  <line class="plabel" x1="42.0" y1="282.7" x2="109.3" y2="286.2" stroke="#546e7a" stroke-width="1"/>
+  <text x="6" y="306.5" text-anchor="start" class="plabel-txt plabel">鏡台</text>
+  <line class="plabel" x1="31.0" y1="303.0" x2="71.5" y2="306.5" stroke="#546e7a" stroke-width="1"/>
+  <text x="294" y="158.0" text-anchor="end" class="plabel-txt plabel">アーム</text>
+  <line class="plabel" x1="258.0" y1="154.5" x2="213.7" y2="158.0" stroke="#546e7a" stroke-width="1"/>
+  <text x="294" y="194.9" text-anchor="end" class="plabel-txt plabel">クリップ</text>
+  <line class="plabel" x1="247.0" y1="191.4" x2="157.9" y2="194.9" stroke="#546e7a" stroke-width="1"/>
+  <text x="294" y="235.4" text-anchor="end" class="plabel-txt plabel">調節ねじ</text>
+  <line class="plabel" x1="247.0" y1="231.9" x2="209.2" y2="235.4" stroke="#546e7a" stroke-width="1"/>
   <g id="hl" style="pointer-events:none;"></g>
 </svg>`;
 }
@@ -625,7 +692,7 @@ const quizzes = [
 ];
 
 function showScreen(id){
-  ['menu-screen','tutorial-screen','gakka-screen','parts-screen','quiz-screen','rescue-screen','license-screen','simulator-screen','rojo-screen']
+  ['menu-screen','tutorial-screen','gakka-screen','p3-screen','parts-screen','quiz-screen','rescue-screen','license-screen','simulator-screen','rojo-screen']
     .forEach(s => document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
@@ -1031,6 +1098,18 @@ const GK = [
     kaisetsu: "⭕覗きながら近づけると、レンズとプレパラートの隙間が見えず、気づかず激突して割ってしまう。だから①横から見て限界まで近づけ、②覗きながら遠ざけてピントを探す。この順序は絶対だ。" }
 ];
 
+/* 学科教習（3D）：three.min.js と parts3d.js は、この教室を開いたときに初めて読み込む */
+function startParts3d(){
+  showScreen('p3-screen');
+  const fail = () => { document.getElementById('p3-loading').textContent = '3Dを読みこめませんでした。three.min.js と parts3d.js が同じフォルダにあるか確かめてください。'; };
+  const load = (src, cb) => { const sc = document.createElement('script'); sc.src = src; sc.onload = cb; sc.onerror = fail; document.body.appendChild(sc); };
+  const go = () => window.P3 && window.P3.start ? window.P3.start() : load('parts3d.js', () => window.P3.start());
+  if (window.THREE) go(); else load('three.min.js', go);
+}
+if (new URLSearchParams(location.search).get('p3')) {
+  if (new URLSearchParams(location.search).get('embed')) document.body.classList.add('p3-embed');
+  addEventListener('load', () => startParts3d());
+}
 function startGakka(){
   showScreen('gakka-screen');
   gk = { step:0, phase:'yosou', chosen:-1, ox:70, oy:-70, mag:0, holdSince:null,
@@ -1229,8 +1308,8 @@ function startParts(){
 }
 function highlightPart(id){
   const hl=document.querySelector('#parts-mount #hl'); if(!hl) return;
-  const pos={ 'p-eyepiece':[141,90,26],'p-objective':[142,208,30],'p-revolver':[140,178,36],
-    'p-stage':[130,240,42],'p-iris':[120,262,20],'p-mirror':[120,290,24],'p-knob':[205,205,24] }[id];
+  const pos={ 'p-eyepiece':[130,56,20],'p-objective':[138,174,22],'p-revolver':[141,154,26],
+    'p-stage':[137,202,54],'p-iris':[146,210,28],'p-mirror':[126,275,28],'p-knob':[196,235,22] }[id];
   hl.innerHTML = pos ? `<circle class="hlring" cx="${pos[0]}" cy="${pos[1]}" r="${pos[2]}"/>` : "";
 }
 function nextParts(){
